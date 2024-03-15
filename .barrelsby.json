@@ -1,0 +1,13 @@
+{
+    "directory": [
+      "./src/components",
+      "./src/constants",
+      "./src/hooks",
+      "./src/screens",
+      "./src/services",
+      "./src/states",
+      "./src/utils",
+      "./src/navigation"
+    ],
+    "delete": true
+  }

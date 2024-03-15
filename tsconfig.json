@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+      "baseUrl": ".",
+      "target": "ESNext",
+      "sourceRoot": "src",
+      "sourceMap": true,
+      "useDefineForClassFields": true,
+      "lib": ["DOM", "DOM.Iterable", "ESNext"],
+      "allowJs": false,
+      "module": "ESNext",
+      "skipLibCheck": true,
+      "esModuleInterop": false,
+      "allowSyntheticDefaultImports": true,
+      "forceConsistentCasingInFileNames": true,
+      "moduleResolution": "Node",
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "noEmit": true,
+      "jsx": "react-jsx",
+      "strict": true,
+      "paths": {
+        "@assets/*": ["src/assets/*"],
+        "@components": ["src/components"],
+        "@constants": ["src/constants"],
+        "@hooks": ["src/hooks"],
+        "@screens": ["src/screens"],
+        "@services": ["src/services"],
+        "@states": ["src/states"],
+        "@utils": ["src/utils"],
+        "@navigation": ["src/navigation"]
+      }
+    },
+    "include": ["src", "**/*.ts", "**/*.tsx", "**/*.js", "*.cjs"],
+    "extends": "@tsconfig/react-native/tsconfig.json"
+  }
+
