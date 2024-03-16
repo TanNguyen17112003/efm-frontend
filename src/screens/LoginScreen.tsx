@@ -18,7 +18,7 @@ export const LoginScreen = () => {
                 <Input type={showPassword ? "text" : "password"} InputRightElement={<Pressable onPress={() => setShowPassword(!showPassword)}>
             <Icon as={showPassword ? <EyeIcon /> : <EyeSlashIcon />} size={5} mr="2" color="muted.400" />
           </Pressable>} placeholder="Password"/>
-                <Button onPress={() => navigation.navigate('Challenge')} style={tw`bg-blue-700`}>Login</Button>
+                <Button onPress={() => navigation.navigate('Goal')} style={tw`bg-blue-700`}>Login</Button>
             </Stack>
         </FormControl>
     </Box>

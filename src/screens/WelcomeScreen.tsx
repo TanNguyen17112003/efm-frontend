@@ -2,6 +2,7 @@ import { Text, Image, View, Button } from "native-base";
 import tw from 'twrnc';
 import { useNavigation } from '@react-navigation/native';
 
+
 export const WelcomeScreen = () => {
     const navigationRef = useNavigation();
   return (
