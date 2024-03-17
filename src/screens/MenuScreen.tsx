@@ -1,6 +1,5 @@
 
 import { Box, Text, FlatList, View, Switch, ChevronRightIcon } from "native-base"
-// import { ChevronRightIcon } from "react-native-heroicons/solid";
 import tw from 'twrnc';
 export const MenuScreen = () => {
     const userData = {
@@ -43,7 +42,7 @@ export const MenuScreen = () => {
             </View>
         </View>
     </Box>
-    <FlatList
+    <FlatList   
         data={items}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
@@ -54,7 +53,6 @@ export const MenuScreen = () => {
         )}
     />
     </Box>
-    
   )
 }
 

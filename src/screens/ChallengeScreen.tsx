@@ -1,6 +1,5 @@
 import { Box, Text, FlatList, View, Input, Pressable, Icon, Progress, Image, ScrollView } from "native-base"
 import { PlusCircleIcon, BellIcon, MagnifyingGlassIcon } from "react-native-heroicons/solid"
-import { Drawer } from "@components";
 import tw from 'twrnc';
 export const ChallengeScreen = () => {
     const formatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit' });
@@ -77,7 +76,6 @@ export const ChallengeScreen = () => {
             )}
         />
         </ScrollView>
-        <Drawer />
     </Box>
   )
 }
