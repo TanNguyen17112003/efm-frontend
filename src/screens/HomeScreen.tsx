@@ -1,8 +1,9 @@
-
-
+import { Text, Box } from "native-base"
 export const HomeScreen = () => {
   return (
-    <div>HomeScreen</div>
+    <Box>
+      <Text>HomeScreen</Text>
+    </Box>
   )
 }
 
