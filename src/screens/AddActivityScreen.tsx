@@ -86,7 +86,7 @@ export const AddActivityScreen = () => {
   return (
     <Box backgroundColor={"white"}>
       <Box backgroundColor="blue.700" paddingTop={10} position="relative" borderBottomRadius={50}>
-      <Box><ChevronLeftIcon style={tw`absolute left-5 top-5 text-white`} onPress={() => navigation.navigate("Challenge")}/></Box>
+      <Box><ChevronLeftIcon style={tw`absolute left-5 top-5 text-white`} onPress={() => navigation.navigate("Home")}/></Box>
         
         <Heading color="white" textAlign="center" style={tw`mb-5`}>Add Activity</Heading>
         <Box style={tw`flex-row justify-around`}>

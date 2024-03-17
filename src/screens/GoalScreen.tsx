@@ -1,6 +1,5 @@
 import { Box, Text, FlatList, View,  Icon, Progress, Image, ScrollView, ThreeDotsIcon } from "native-base"
 import { PlusCircleIcon } from "react-native-heroicons/solid";
-import { Drawer } from "@components";
 import tw from 'twrnc';
 export const GoalScreen = () => {
   const goalList = [
@@ -68,38 +67,6 @@ export const GoalScreen = () => {
     </Box>
       ) )}
       </ScrollView>
-      {/* <ScrollView h="520"> 
-        <FlatList
-            backgroundColor='gray.300'
-            style={tw`p-3`}
-            data={goalList}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({item}) => (
-               <Box style={tw`p-5 mb-5`} backgroundColor='white' borderWidth="1" borderColor="coolGray.300" rounded={8}>
-                    <View style={tw`flex-row items-center justify-between mb-3`}>
-                      <Box style={tw`flex-row items-center gap-3`}>
-                          <Image source={item.category} alt="Category" style={tw`w-10 h-10`} />
-                          <View>
-                              <Text bold>{item.title}</Text>
-                              <Text opacity={50}>{`${formatter.format(item.date)}, ${item.date.getFullYear()}`}</Text>
-                          </View>
-                      </Box>
-                        
-                        <ThreeDotsIcon color="gray.500"/>
-                    </View>
-                    <View style={tw`flex-row items-center justify-between mb-3`}>
-                      <Box style={tw`flex-row items-center gap-3`}>
-                        <Text bold fontSize='2xl'>{`${item.currentMoney / 1000000}M VNĐ`}</Text>
-                        <Text>{`saved of ${item.totalMoney / 1000000}M VNĐ`}</Text>
-                      </Box>
-                        <Text italic>{`${getDiffDate(item.date)} days left`}</Text>
-                    </View>
-                    <Progress w="300" shadow={2} value={item.currentMoney / item.totalMoney * 100} style={tw`mb-3`}/>
-               </Box>
-            )}
-        />
-      </ScrollView> */}
-      <Drawer />
     </Box>
   )
 }
