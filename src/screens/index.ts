@@ -9,4 +9,6 @@ export * from './HomeScreen';
 export * from './LoginScreen';
 export * from './MenuScreen';
 export * from './OnboardingScreen';
+export * from './SignupScreen';
+export * from './SplashScreen';
 export * from './WelcomeScreen';

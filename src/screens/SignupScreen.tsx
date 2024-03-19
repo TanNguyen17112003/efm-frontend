@@ -4,7 +4,7 @@ import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
 
 import tw from 'twrnc';
-export const LoginScreen = () => {
+export const SignupScreen = () => {
     const navigation = useNavigation();
     const [showPassword, setShowPassword] = useState<boolean>(false);
   return (
@@ -17,7 +17,7 @@ export const LoginScreen = () => {
         <Image source={require('../assets/corner.png')} alt="Welcome" resizeMode="contain"/>
         </Box>
         <View padding={5}>
-        <Text fontSize='3xl' bold style={tw`text-blue-800`}>Sign In to EFM!</Text>
+        <Text fontSize='3xl' bold style={tw`text-blue-800`}>Sign Up to EFM!</Text>
         <Text style={tw`text-blue-400 mb-5`}>
             Efficient Finance Managemen(EFM)
         </Text>
@@ -28,7 +28,10 @@ export const LoginScreen = () => {
                 <Input type={showPassword ? "text" : "password"} InputRightElement={<Pressable onPress={() => setShowPassword(!showPassword)}>
             <Icon as={showPassword ? <EyeIcon /> : <EyeSlashIcon />} size={5} mr="2" color="muted.400" />
           </Pressable>} placeholder="Password"/>
-                <Button onPress={() => navigation.navigate('DrawerStack')} style={tw`bg-blue-700`}>Login</Button>
+          <Input type={showPassword ? "text" : "password"} InputRightElement={<Pressable onPress={() => setShowPassword(!showPassword)}>
+            <Icon as={showPassword ? <EyeIcon /> : <EyeSlashIcon />} size={5} mr="2" color="muted.400" />
+          </Pressable>} placeholder="Confirm Password"/>
+                <Button onPress={() => navigation.navigate('DrawerStack')} style={tw`bg-blue-700`}>Sign Up</Button>
             </Stack>
         </FormControl>
         </Box>
