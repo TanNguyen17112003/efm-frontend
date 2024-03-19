@@ -1,5 +1,5 @@
 import tw from 'twrnc';
-import { Box, Text, Icon, View, Heading, ChevronLeftIcon, FormControl, Select, Image, Input, Button } from "native-base"
+import { Box, Text, Icon, View, Heading, ChevronLeftIcon, FormControl, Select, Input, Button } from "native-base"
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { PencilIcon, CalendarDaysIcon } from 'react-native-heroicons/solid';

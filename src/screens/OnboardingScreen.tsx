@@ -24,7 +24,7 @@ export const OnboardingScreen = () => {
   return (
    <OnboardFlow 
         pages={onBoardingList}
-        onDone={() => navigation.navigate('Login')}
+        onDone={() => navigation.navigate('Welcome')}
    />
     
   )
