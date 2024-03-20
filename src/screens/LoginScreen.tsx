@@ -2,10 +2,13 @@ import { FormControl, Box, Text, Input, Stack, Button, Icon, Pressable, Image, V
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
+import * as Google from 'expo-auth-session/providers/google';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import tw from 'twrnc';
 export const LoginScreen = () => {
     const navigation = useNavigation();
+    
     const [showPassword, setShowPassword] = useState<boolean>(false);
   return (
     <View backgroundColor="white" position='relative' height='100%'>
