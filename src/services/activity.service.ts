@@ -1,8 +1,8 @@
 import axiosInstance from "src/config/axios.config";
 
-export const getAllGoals = async (token: string) => {
+export const getAllActivities = async (token: string) => {
     try {
-        const response = await axiosInstance.get('/goal', {
+        const response = await axiosInstance.get('/activity', {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -14,9 +14,9 @@ export const getAllGoals = async (token: string) => {
     }
 }
 
-export const getGoalById = async (token: string, id: string) => {
+export const getActivityById = async (token: string, id: string) => {
     try {
-        const response = await axiosInstance.get(`/goal/${id}`, {
+        const response = await axiosInstance.get(`/activity/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -28,9 +28,9 @@ export const getGoalById = async (token: string, id: string) => {
     }
 }
 
-export const configGoalById = async(token: string, id: string, category: string, title: string, date: Date, target: number, current: number) => {
+export const configActivityById = async(token: string, id: string, category: string, title: string, date: Date, target: number, current: number) => {
     try {
-        const response = await axiosInstance.put(`/goal/${id}`, {
+        const response = await axiosInstance.put(`/activity/${id}`, {
             category, title, date, target, current
         }, {
             headers: {
@@ -44,9 +44,9 @@ export const configGoalById = async(token: string, id: string, category: string,
     }
 }
 
-export const createGoal = async (token: string, category: string, title: string, date: Date, target: number, current: number) => {
+export const createActivity = async (token: string, category: string, title: string, date: Date, target: number, current: number) => {
     try {
-        const response = await axiosInstance.post('/goal', {
+        const response = await axiosInstance.post('/activity', {
             category, title, date, target, current
         }, {
             headers: {
@@ -60,9 +60,9 @@ export const createGoal = async (token: string, category: string, title: string,
     }
 }
 
-export const deleteGoalById = async (token: string, id: string) => {
+export const deleteActivity = async (token: string, id: string) => {
     try {
-        const response = await axiosInstance.delete(`/goal/${id}`, {
+        const response = await axiosInstance.delete(`/activity/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }

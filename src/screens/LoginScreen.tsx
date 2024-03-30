@@ -5,6 +5,7 @@ import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { login } from "@services";
+import { storeJWT } from "@utils";
 
 import tw from 'twrnc';
 export const LoginScreen = () => {
@@ -12,11 +13,16 @@ export const LoginScreen = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
     const handleLogin = async () => {
         try {
             const response = await login(email, password);
-            if (response?.token) {
-              navigation.navigate('DrawerStack');
+            if (response.token) {
+                await storeJWT(response.token);
+                navigation.navigate('DrawerStack')
+            }
+            else {
+                setError(response.message)
             }
         }
         catch (error) {
@@ -43,9 +49,11 @@ export const LoginScreen = () => {
                 <Input placeholder="Email" value={email} onChangeText={text => setEmail(text)}/>
                 <Input value={password} onChangeText={text => setPassword(text)} type={showPassword ? "text" : "password"} InputRightElement={<Pressable onPress={() => setShowPassword(!showPassword)}>
             <Icon as={showPassword ? <EyeIcon /> : <EyeSlashIcon />} size={5} mr="2" color="muted.400" />
+           
           </Pressable>} placeholder="Password"/>
                 <Button onPress={handleLogin} style={tw`bg-blue-700`}>Login</Button>
             </Stack>
+            {error && <Text color="red.500" textAlign={'center'} fontWeight={'bold'} marginTop={'5'}>{error}</Text>}
         </FormControl>
         </Box>
         </View>

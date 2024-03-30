@@ -1,12 +1,12 @@
 import { Box, View, Text, Button, Image, Pressable } from "native-base"
 import tw from 'twrnc';
-import {  useNavigation } from "@react-navigation/native";
+import { NavigationHelpersContext, useNavigation } from "@react-navigation/native";
 
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from "expo-web-browser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
-
+import { makeRedirectUri } from "expo-auth-session";
 import InAppBrowser from "react-native-inappbrowser-reborn";
 
 
@@ -96,6 +96,7 @@ export const WelcomeScreen = () => {
             {/* <Text>{userInfo?.name}</Text> */}
             <Image source={require('../assets/welcome.png')} alt="Welcome" resizeMode="contain" width='50%' height='50%' />
             <Button style={tw`bg-blue-700`} width='90%' onPress={() => navigation.navigate('Login')}>Sign In</Button>
+            <Button style={tw`bg-blue-700`} width='90%' onPress={() => navigation.navigate('Signup')}>Sign Up</Button>
             <Pressable backgroundColor="white" style={tw`flex-row items-center justify-center gap-3 border p-2 rounded`} width='90%' onPress={handleOpenInAppBrowser} >
                 <Image source={require('../assets/google.png')} alt="Google" width={5} height={5} />
                 <Text color="black">Sign in with Google</Text>
