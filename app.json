@@ -27,6 +27,13 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+<<<<<<< HEAD
     "scheme": "efm-frontend"
+=======
+    "scheme": "efm-frontend",
+    "plugins": [
+      "expo-secure-store"
+    ]
+>>>>>>> d65680f9c62122ad5a169e62685b7c613dc0b9c0
   }
 }
