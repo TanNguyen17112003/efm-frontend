@@ -15,21 +15,35 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "runtimeVersion": {
+        "policy": "appVersion"
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.efmfrontend"
+      "package": "com.anonymous.efmfrontend",
+      "runtimeVersion": "1.0.0"
     },
     "web": {
+      "output": "server",
+      "bundler": "metro",
       "favicon": "./assets/favicon.png"
     },
     "scheme": "efm-frontend",
+    "extra": {
+      "eas": {
+        "projectId": "ce775132-3132-445b-8ad2-d249404d17b6"
+      }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/ce775132-3132-445b-8ad2-d249404d17b6"
+    },
     "plugins": [
-      "expo-secure-store"
+      "expo-router"
     ]
   }
 }

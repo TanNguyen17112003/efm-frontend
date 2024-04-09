@@ -2,23 +2,27 @@ import { Box, Text, FlatList, View,  Icon, Progress, Image, ScrollView, ThreeDot
 import { PlusCircleIcon } from "react-native-heroicons/solid";
 import { getAllGoals } from "@services";
 import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { getJWT } from "@utils";
 import tw from 'twrnc';
 export const GoalScreen = () => {
+  const navigation = useNavigation();
   const [goalList, setGoalList] = useState([]);
-  useEffect(() => {
-    const fetchGoals = async () => {
-      try {
-        const response = await getAllGoals();
-        console.log(response)
-        setGoalList(response);
-      }
-      catch (e) {
-        throw e
-      }
-    }
-    fetchGoals();
-  }
-  , [])
+  // useEffect(() => {
+  //   const fetchGoals = async () => {
+  //     try {
+  //       const token = getJWT();
+  //       const response = await getAllGoals(token);
+  //       console.log(response)
+  //       setGoalList(response);
+  //     }
+  //     catch (e) {
+  //       throw e
+  //     }
+  //   }
+  //   fetchGoals();
+  // }
+  // , [])
   
   const formatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit' });
   const getDiffDate = (date: Date) => {
@@ -33,7 +37,7 @@ export const GoalScreen = () => {
             <Text bold fontSize='2xl' color="white">Goals</Text>
             <Text color="white" opacity="60">Don't forget about your goals because they are the spirit that make you stay life</Text>
             <Box style={tw`flex-row justify-center items-center gap-3 p-2 mt-3`} backgroundColor="white">
-                <Icon as={<PlusCircleIcon size={50} />} color="blue.500" />
+                {/* <Icon as={<PlusCircleIcon size={50} />} color="blue.500" onPress={() => navigation.navigate("Success")}/> */}
                 <Text bold>Add your goals</Text>
             </Box>
       </Box>

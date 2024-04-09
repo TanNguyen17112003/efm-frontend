@@ -1,0 +1,21 @@
+{
+    "build": {
+      "preview": {
+        "android": {
+          "buildType": "apk"
+        },
+        "env": {
+            "API_URL": "https://efm-backend-production-bf79.up.railway.app/api"
+        }
+      },
+      "preview2": {
+        "android": {
+          "gradleCommand": ":app:assembleRelease"
+        }
+      },
+      "preview3": {
+        "developmentClient": true
+      },
+      "production": {}
+    }
+  }

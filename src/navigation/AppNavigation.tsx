@@ -1,10 +1,20 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { SignupScreen, WelcomeScreen, SplashScreen, OnboardingScreen, LoginScreen, HomeScreen, MenuScreen, GoalScreen, ChallengeScreen, AddActivityScreen } from "@screens";
+import { SuccessScreen, SignupScreen, WelcomeScreen, SplashScreen, OnboardingScreen, LoginScreen, HomeScreen, MenuScreen, GoalScreen, ChallengeScreen, AddActivityScreen } from "@screens";
 import { Drawer } from "@components";
 
+interface StackNavigatorParams {
+  Splash: undefined;
+  Welcome: undefined;
+  Onboarding: undefined;
+  Login: undefined;
+  DrawerStack: undefined;
+  Signup: undefined;
+  Success: Success;
+  [key: string]: undefined | Success;
+}
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<StackNavigatorParams>();
 const DrawerStack = createNativeStackNavigator();
 
 const DrawerStackScreen = () => (
@@ -30,6 +40,7 @@ export const AppNavigation = () => {
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="DrawerStack" component={DrawerStackScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Screen name="Success" component={SuccessScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

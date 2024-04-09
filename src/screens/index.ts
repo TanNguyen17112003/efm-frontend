@@ -11,4 +11,5 @@ export * from './MenuScreen';
 export * from './OnboardingScreen';
 export * from './SignupScreen';
 export * from './SplashScreen';
+export * from './SuccessScreen';
 export * from './WelcomeScreen';
