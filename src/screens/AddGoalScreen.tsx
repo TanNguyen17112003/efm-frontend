@@ -79,32 +79,19 @@ export const AddGoalScreen = () => {
   ]
   return (
     <Box backgroundColor={"white"}>
-      <Box backgroundColor="blue.700" paddingTop={100} position="relative" borderBottomRadius={0}>
-      <Box><ChevronLeftIcon style={tw`absolute left-5 top-5 text-white`} onPress={() => navigation.navigate("Goal")}/></Box>   
-        <Heading color="white" textAlign="center" style={tw`mb-5`}>Add Goal</Heading>
-      </Box>
+      <Box backgroundColor="blue.700" paddingX={5} paddingTop={10} position="relative" borderBottomRadius={0} display='flex' flexDirection='row' justifyContent='center' alignItems='center'>
+  <ChevronLeftIcon style={tw`text-white absolute left-5`} onPress={() => navigation.navigate("Goal")}/> 
+  <Heading color="white" marginBottom='5'>Add Goal</Heading>
+</Box>
 
-      <FormControl padding={5} style={tw`h-full`}>
-        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Choose icon</Text></FormControl.Label>
-        {/* <View style={styles.container}>
-      {iconList.map((icon, index) => (
-        <TouchableOpacity key={index} onPress={() => setSelectedIcon(icon.image)}>
-                    <Image
-            source={icon.image}
-            style={[
-              styles.icon,
-              selectedIcon === icon.image && styles.selectedIcon
-            ]}
-          />
-
-        </TouchableOpacity>
-      ))}
-    </View> */}
-    <Select 
+      <FormControl padding={5}>
+        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Choose Category</Text></FormControl.Label>
+       
+        <Select 
           shadow={2} 
           selectedValue={category} 
           marginBottom={5} 
-          placeholder={`Choose goal icon`}
+          placeholder={`Choose goal category`}
           onValueChange={(itemValue) => setCategory(itemValue)}
 
         >
@@ -144,7 +131,7 @@ export const AddGoalScreen = () => {
               value={saved.toString()}
               onChangeText={(value) => setSaved(Number(value))}
             />
-        <Button marginTop={12} backgroundColor="blue.800">Create</Button>
+        <Button marginY={10} backgroundColor="blue.800">Create</Button>
       </FormControl>
 
     </Box>

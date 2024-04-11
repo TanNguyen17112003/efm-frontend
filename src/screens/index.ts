@@ -3,6 +3,7 @@
  */
 
 export * from './AddActivityScreen';
+export * from './AddGoalScreen';
 export * from './ChallengeScreen';
 export * from './GoalScreen';
 export * from './HomeScreen';
@@ -12,4 +13,5 @@ export * from './OnboardingScreen';
 export * from './SignupScreen';
 export * from './SplashScreen';
 export * from './SuccessScreen';
+export * from './UpdateGoalScreen';
 export * from './WelcomeScreen';
