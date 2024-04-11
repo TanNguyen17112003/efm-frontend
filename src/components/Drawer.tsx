@@ -30,16 +30,18 @@ export const Drawer = () => {
   ]
   return (
     <Box backgroundColor="white" style={tw`relative`}>
-      <Icon as={<PlusCircleIcon size={50} />} color="blue.500" style={tw`absolute left-43 -top-5`} onPress={() => navigation.navigate("AddActivity")}/>
-      <View style={tw`flex-row items-center justify-around py-5`}>
-      {drawerList.map((item, index) => (
-        <Box style={tw`flex-col items-center`}>
-          <Icon key={index} as={MaterialCommunityIcons} name={item.name} size={8} onPress={item.onPress} />
-          <Text>{item.title}</Text>
-        </Box>
-      ))}
-    </View>
-    </Box>
+  <Box style={tw`absolute top-0 left-0 right-0 items-center justify-center`}>
+    <Icon as={<PlusCircleIcon size={50} />} color="blue.500" onPress={() => navigation.navigate("AddActivity")}/>
+  </Box>
+  <View style={tw`flex-row items-center justify-around py-5`}>
+    {drawerList.map((item, index) => (
+      <Box style={tw`flex-col items-center`}>
+        <Icon key={index} as={MaterialCommunityIcons} name={item.name} size={8} onPress={item.onPress} />
+        <Text>{item.title}</Text>
+      </Box>
+    ))}
+  </View>
+</Box>
     
   )
 }

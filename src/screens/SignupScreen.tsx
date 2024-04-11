@@ -46,7 +46,7 @@ export const SignupScreen = () => {
     }
   return (
     <View backgroundColor="white" position='relative' height='100%'>
-       <Pressable flexDirection="row" display="flex" alignItems='center' position='absolute' left={5} top={10} onPress={() => navigation.navigate('Welcome')}>
+       <Pressable flexDirection="row" display="flex" alignItems='center' position='absolute' left={5} top={20} onPress={() => navigation.navigate('Welcome')}>
        <ChevronLeftIcon/>
        <Text bold marginLeft={2}>Back</Text>
        </Pressable>
