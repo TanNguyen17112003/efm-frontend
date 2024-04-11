@@ -3,4 +3,5 @@
  */
 
 export * from './Drawer';
+export * from './Plus';
 export * from './Success';

@@ -4,6 +4,7 @@ import { getAllGoals } from "@services";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { getJWT } from "@utils";
+import { Plus } from "@components";
 import tw from 'twrnc';
 export const GoalScreen = () => {
   const navigation = useNavigation();
@@ -37,7 +38,7 @@ export const GoalScreen = () => {
             <Text bold fontSize='2xl' color="white">Goals</Text>
             <Text color="white" opacity="60">Don't forget about your goals because they are the spirit that make you stay life</Text>
             <Box style={tw`flex-row justify-center items-center gap-3 p-2 mt-3`} backgroundColor="white">
-                {/* <Icon as={<PlusCircleIcon size={50} />} color="blue.500" onPress={() => navigation.navigate("Success")}/> */}
+                <Plus address="AddGoal"/>
                 <Text bold>Add your goals</Text>
             </Box>
       </Box>

@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { SuccessScreen, SignupScreen, WelcomeScreen, SplashScreen, OnboardingScreen, LoginScreen, HomeScreen, MenuScreen, GoalScreen, ChallengeScreen, AddActivityScreen } from "@screens";
+import { AddGoalScreen, SuccessScreen, SignupScreen, WelcomeScreen, SplashScreen, OnboardingScreen, LoginScreen, HomeScreen, MenuScreen, GoalScreen, ChallengeScreen, AddActivityScreen } from "@screens";
 import { Drawer } from "@components";
 
 interface StackNavigatorParams {
@@ -41,6 +41,7 @@ export const AppNavigation = () => {
         <Stack.Screen name="DrawerStack" component={DrawerStackScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="Success" component={SuccessScreen} />
+        <Stack.Screen name="AddGoal" component={AddGoalScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

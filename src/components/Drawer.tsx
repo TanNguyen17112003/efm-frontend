@@ -1,7 +1,7 @@
 import { Box, Text, Icon, View } from "native-base"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native";
-import { PlusCircleIcon } from "react-native-heroicons/solid";
+import {Plus} from "./Plus";
 import tw from 'twrnc';
 
 export const Drawer = () => {
@@ -30,16 +30,18 @@ export const Drawer = () => {
   ]
   return (
     <Box backgroundColor="white" style={tw`relative`}>
-      <Icon as={<PlusCircleIcon size={50} />} color="blue.500" style={tw`absolute left-43 -top-5`} onPress={() => navigation.navigate("AddActivity")}/>
-      <View style={tw`flex-row items-center justify-around py-5`}>
-      {drawerList.map((item, index) => (
-        <Box style={tw`flex-col items-center`}>
-          <Icon key={index} as={MaterialCommunityIcons} name={item.name} size={8} onPress={item.onPress} />
-          <Text>{item.title}</Text>
-        </Box>
-      ))}
-    </View>
-    </Box>
+  <Box style={tw`absolute -top-5 left-0 right-0 items-center justify-center`}>
+    <Plus address="AddActivity"/>
+  </Box>
+  <View style={tw`flex-row items-center justify-around py-5`}>
+    {drawerList.map((item, index) => (
+      <Box style={tw`flex-col items-center`}>
+        <Icon key={index} as={MaterialCommunityIcons} name={item.name} size={8} onPress={item.onPress} />
+        <Text>{item.title}</Text>
+      </Box>
+    ))}
+  </View>
+</Box>
     
   )
 }
