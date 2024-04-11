@@ -1,0 +1,152 @@
+import tw from 'twrnc';
+import { Box, Text, Icon, View, Heading, ChevronLeftIcon, FormControl, Select, Input, Button } from "native-base"
+import React, { useState } from 'react';
+import { StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { CalendarDaysIcon } from 'react-native-heroicons/solid';
+import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+
+export const AddGoalScreen = () => {
+  const navigation = useNavigation();
+  const [title, setTitle] = useState<string>('');
+  const [date, setDate] = useState<Date>(new Date());
+  const [target, setTarget] = useState<number>(0);
+  const [saved, setSaved] = useState<number>(0);
+  const [show, setShow] = useState<boolean>(false);
+  const [category, setCategory] = useState<string>('');
+  const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+    setShow(false);
+  };
+  const [selectedIcon, setSelectedIcon] = useState(null);
+  const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-around',
+    },
+    icon: {
+      width: 60,
+      height: 60,
+      margin: 10,
+    },
+    selectedIcon: {
+      borderWidth: 4,
+      borderColor: 'blue',
+    },
+    tick: {
+      position: 'absolute',
+      right: 0,
+      bottom: 0,
+      fontSize: 24,
+      color: 'blue',
+    },
+  });
+  const iconList = [
+    {
+      category: "Salary",
+      image: require('../assets/icon-credit.png')
+    },
+    {
+      category: "Holiday",
+      image: require('../assets/icon-holiday.png')
+    },
+    {
+      category: "Shopping",
+      image: require('../assets/icon-shopping.png')
+    },
+    {
+      category: "Food and Drinks",
+      image: require('../assets/icon-food.png')
+    },
+    {
+      category: "Education",
+      image: require('../assets/icon-edu.png')
+    },
+    {
+      category: "Transport_2",
+      image: require('../assets/icon-transport-2.png')
+    },
+    {
+      category: "Venue",
+      image: require('../assets/icon-venue.png')
+    },
+    {
+      category: "Dating",
+      image: require('../assets/icon-ty.png')
+    },
+  ]
+  return (
+    <Box backgroundColor={"white"}>
+      <Box backgroundColor="blue.700" paddingTop={100} position="relative" borderBottomRadius={0}>
+      <Box><ChevronLeftIcon style={tw`absolute left-5 top-5 text-white`} onPress={() => navigation.navigate("Goal")}/></Box>   
+        <Heading color="white" textAlign="center" style={tw`mb-5`}>Add Goal</Heading>
+      </Box>
+
+      <FormControl padding={5} style={tw`h-full`}>
+        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Choose icon</Text></FormControl.Label>
+        {/* <View style={styles.container}>
+      {iconList.map((icon, index) => (
+        <TouchableOpacity key={index} onPress={() => setSelectedIcon(icon.image)}>
+                    <Image
+            source={icon.image}
+            style={[
+              styles.icon,
+              selectedIcon === icon.image && styles.selectedIcon
+            ]}
+          />
+
+        </TouchableOpacity>
+      ))}
+    </View> */}
+    <Select 
+          shadow={2} 
+          selectedValue={category} 
+          marginBottom={5} 
+          placeholder={`Choose goal icon`}
+          onValueChange={(itemValue) => setCategory(itemValue)}
+
+        >
+          {iconList.map((item, index) => (
+            <Select.Item key={index} label={item.category} value={item.category} />
+          )) 
+          }
+        </Select>
+        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Goal Title</Text></FormControl.Label>
+        <Input placeholder='Write your goal title' value={title} onChangeText={setTitle}/>
+        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Goal date</Text></FormControl.Label>
+            <Input 
+              value={date.toLocaleDateString()} 
+              onPressIn={() => setShow(true)}
+              placeholder="Select a date"
+              InputRightElement={<Icon as={<CalendarDaysIcon size={16}/>} mr="3" color="blue.700"  onPress={() => setShow(true)} />}
+            />
+          {show && (
+      <RNDateTimePicker
+        testID="dateTimePicker"
+        value={date}
+        mode="date"
+        is24Hour={true}
+        display="default"
+        onChange={onChange}
+      />
+    )}
+        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Goal target</Text></FormControl.Label>
+            <Input
+              placeholder='Enter target money'
+              value={target.toString()}
+              onChangeText={(value) => setTarget(Number(value))}
+            />
+        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Goal saved</Text></FormControl.Label>
+            <Input
+              placeholder='Enter saved money'
+              value={saved.toString()}
+              onChangeText={(value) => setSaved(Number(value))}
+            />
+        <Button marginTop={12} backgroundColor="blue.800">Create</Button>
+      </FormControl>
+
+    </Box>
+  )
+}
