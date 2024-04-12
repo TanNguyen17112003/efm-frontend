@@ -30,9 +30,11 @@ Please follow these steps to run **EFM project** right:
 4. `yarn run android` to run on **Android Studio Simulator** directly or `yarn start` and scan QR code to run on expo.
 
 ## Flow of screen when using this application.
-- From splash sreen to home screen.
-https://github.com/TanNguyen17112003/efm-frontend/assets/109587630/e1a06d66-7aeb-44e5-b058-d9221f784017
+- Login and Home screen.
+  
+https://github.com/TanNguyen17112003/efm-frontend/assets/109587630/930f94e1-5789-40de-9d83-d027149b862e
 
-- Activity and goal screens.
-https://github.com/TanNguyen17112003/efm-frontend/assets/109587630/f623d7ed-686d-4190-b6bc-72a4695015f3
+- Activity and Goal screen.
+
+https://github.com/TanNguyen17112003/efm-frontend/assets/109587630/47a97605-05d8-4b17-b5d4-75111d84860e
 
