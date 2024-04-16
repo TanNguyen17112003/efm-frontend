@@ -1,8 +1,9 @@
 import * as Keychain from "react-native-keychain";
 
-export const storeJWT = async (token: string) => {
+export const storeJWT = async (data: { token: string, name: string }) => {
     try {
-        await Keychain.setGenericPassword('token', token);
+        const combinedData = `${data.token}::${data.name}`;
+        await Keychain.setGenericPassword('userData', combinedData);
     } catch (e) {
         throw e;
     }
@@ -11,8 +12,9 @@ export const storeJWT = async (token: string) => {
 export const getJWT = async () => {
     try {
         const credentials = await Keychain.getGenericPassword();
-        if (credentials && credentials.username === 'token') {
-            return credentials.password;
+        if (credentials && credentials.username === 'userData') {
+            const [token, name] = credentials.password.split('::');
+            return { token, name };
         }
         return null;
     } catch (e) {

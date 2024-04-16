@@ -1,24 +1,47 @@
 import tw from 'twrnc';
 import { Box, Text, Icon, View, Heading, ChevronLeftIcon, FormControl, Select, Input, Button } from "native-base"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { PencilIcon, CalendarDaysIcon } from 'react-native-heroicons/solid';
 import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { createActivity } from '@services';
+import { getJWT } from '@utils';
 
 export const AddActivityScreen = () => {
   const navigation = useNavigation();
   const [activity, setActivity] = useState<string>('Expense');
+  const [token, setToken] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const activityList = ["Expense", "Income"];
   const [content, setContent] = useState<string>('');
   const [amount, setAmount] = useState<number>(0);
   const [date, setDate] = useState<Date>(new Date());
   const [show, setShow] = useState<boolean>(false);
+  useEffect(() => {
+    const getToken = async () => {
+      const data = await getJWT();
+      if (data) {
+        setToken(data.token);
+      }
+    }
+    getToken();
+  },[])
   const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
     setShow(false);
   };
+  const handleAddActivity = () => {
+    createActivity(
+      token,
+      activity,
+      category,
+      content,
+      date,
+      amount,
+    );
+    navigation.navigate("Home");
+  }
   const expenseCategoryList = [
     {
       category: "Transport",
@@ -113,7 +136,7 @@ export const AddActivityScreen = () => {
           ))}
         </Select>
         <FormControl.Label><Text fontSize={"2xl"} bold color="blue.700">Contents</Text></FormControl.Label>
-        <Input placeholder='Write your conent' InputRightElement={<Icon as={<PencilIcon size={16}/>} mr="3"/>} value={content} onChangeText={setContent}/>
+        <Input placeholder='Write your conent' InputRightElement={<Icon as={<PencilIcon size={16}/>} mr="3"/>} value={content} onChangeText = {(value) => setContent(value)}/>
         <View style={tw`flex-row gap-3`} marginBottom={10}>
           <Box width="50%">
             <FormControl.Label><Text fontSize={"2xl"} bold color="blue.700">Date</Text></FormControl.Label>
@@ -142,7 +165,7 @@ export const AddActivityScreen = () => {
             />
           </Box>
         </View>
-        <Button backgroundColor="blue.700">Save</Button>
+        <Button backgroundColor="blue.700" onPress={handleAddActivity}>Save</Button>
       </FormControl>
 
      

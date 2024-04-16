@@ -44,10 +44,10 @@ export const configActivityById = async(token: string, id: string, category: str
     }
 }
 
-export const createActivity = async (token: string, category: string, title: string, date: Date, target: number, current: number) => {
+export const createActivity = async (token: string, type: string, category: string, content: string, createdAt: Date, amount: number) => {
     try {
         const response = await axiosInstance.post('/activity', {
-            category, title, date, target, current
+            type, category, content, createdAt, amount
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
