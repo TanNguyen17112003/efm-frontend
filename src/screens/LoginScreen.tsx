@@ -5,7 +5,7 @@ import { EyeIcon, EyeSlashIcon } from "react-native-heroicons/solid";
 import * as Google from 'expo-auth-session/providers/google';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { login } from "@services";
-import { storeJWT } from "@utils";
+import { storeJWT} from "@utils";
 
 import tw from 'twrnc';
 export const LoginScreen = () => {
@@ -18,7 +18,7 @@ export const LoginScreen = () => {
         try {
             const response = await login(email, password);
             if (response.token) {
-                await storeJWT(response.token);
+                await storeJWT(response);
                 navigation.navigate('DrawerStack')
             }
             else {
