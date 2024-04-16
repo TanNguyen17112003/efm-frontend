@@ -38,3 +38,7 @@ https://github.com/TanNguyen17112003/efm-frontend/assets/109587630/930f94e1-5789
 
 https://github.com/TanNguyen17112003/efm-frontend/assets/109587630/47a97605-05d8-4b17-b5d4-75111d84860e
 
+- Challenge screen:
+
+https://github.com/TanNguyen17112003/efm-frontend/assets/109587630/e56526a7-935a-4054-be28-39cd37488687
+
