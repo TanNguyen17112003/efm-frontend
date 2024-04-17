@@ -1,4 +1,13 @@
-import { Text, Box, View, Icon, Image, Button, ScrollView } from "native-base"
+import { Text, Box, View, Icon, Image, Button, ScrollView } from "native-base";
+import {
+  LineChart,
+  BarChart,
+  PieChart,
+  ProgressChart,
+  ContributionGraph,
+  StackedBarChart
+} from "react-native-chart-kit";
+import { Dimensions } from "react-native";
 import { BellIcon } from "react-native-heroicons/solid";
 import { getJWT } from "@utils";
 import { getAllActivities } from "@services";
@@ -16,6 +25,7 @@ type Activity = {
   image: any;
 }
 export const HomeScreen = () => {
+  const [monthlyTotals, setMonthlyTotals] = useState(Array.from({length: 12}, () => ({ income: 0, expense: 0 })));
   const [userName, setUserName] = useState<string>('');
   const [listActivities, setListActivities] = useState<Activity[]>([]);
   const modifyListActivity = (activityList: Activity[]) => {
@@ -27,27 +37,51 @@ export const HomeScreen = () => {
     })
     setListActivities(newActivityList);
   }
-  useFocusEffect(
-    React.useCallback(() => {
-      const getUserData = async () => {
-        const data = await getJWT();
-        if (data) {
-          setUserName(data.name);
-        }
-      }
-      const getActivities = async () => {
-        const data = await getJWT();
-        if (data) {
-          const response = await getAllActivities(data.token);
-          modifyListActivity(response);
-        }
-      }
-      getUserData();
-      getActivities();
   
-      return () => {}; // optional cleanup function
-    }, [])
-  );
+  useFocusEffect(
+  React.useCallback(() => {
+    const getUserData = async () => {
+      const data = await getJWT();
+      if (data) {
+        setUserName(data.name);
+      }
+    }
+    const getActivities = async () => {
+      const data = await getJWT();
+      if (data) {
+        const response = await getAllActivities(data.token);
+        modifyListActivity(response);
+      }
+    }
+    const calculateMonthlyTotals = (activities: Activity[]) => {
+      const totals = Array.from({length: 12}, () => ({ income: 0, expense: 0 }));
+    
+      activities.forEach(activity => {
+        const month = new Date(activity.createdAt).getMonth();
+    
+        if (activity.type == 'Income') {
+          totals[month].income += activity.amount;
+        } else if (activity.type == 'Expense') {
+          totals[month].expense += activity.amount;
+        }
+      });
+    
+      setMonthlyTotals(totals); // update the state with the new totals
+    };
+    getUserData();
+    getActivities();
+    calculateMonthlyTotals(listActivities);
+    return () => {}; // optional cleanup function
+  }, [listActivities])
+);
+  // useFocusEffect(
+  //   React.useCallback(() => {
+  //     const totals = calculateMonthlyTotals(listActivities);
+  //     setMonthlyTotals(totals);
+  //     console.log(monthlyTotals);
+  //     return () => {}
+  //   }, [listActivities])
+  // );
   const getExactTime = () => {
     var today = new Date();
     var time = today.getHours();
@@ -61,12 +95,39 @@ export const HomeScreen = () => {
   }
   const getTotalAmount = (activityList: Activity[]) => {
     const totalAmount = activityList.reduce((total, item) => {
-      return item.type === "expense" ? total - item.amount : total + item.amount;
+      return item.type === "Expense" ? total - item.amount : total + item.amount;
     }, 0);
     return totalAmount.toLocaleString('de-DE');
   }
   return (
+
     <Box>
+ <StackedBarChart
+  data={{
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    legend: ['Income', 'Expense'],
+    data: monthlyTotals.map(total => [total.income, total.expense]),
+    barColors: ['#3498db', '#e74c3c'],
+  }}
+  width={Dimensions.get('window').width}
+  height={220}
+  chartConfig={{
+    backgroundColor: '#1cc910',
+    backgroundGradientFrom: '#eff3ff',
+    backgroundGradientTo: '#efefef',
+    decimalPlaces: 2,
+    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    style: {
+      borderRadius: 16,
+    },
+  }}
+  style={{
+    marginVertical: 8,
+    borderRadius: 16,
+    marginLeft: 8,
+    marginRight: 8,
+  }}
+/>
       <Box backgroundColor="blue.700" padding={10}>
         <View style={tw`flex-row items-center justify-between`} marginBottom={5}>
             <Box>
@@ -83,7 +144,7 @@ export const HomeScreen = () => {
           <Button color="white" backgroundColor="gray.800" bgColor="blue.400">View detail</Button>
         </View>
       </Box>
-      <ScrollView padding={3}>
+      <ScrollView h={300}>
         {listActivities.map((item, index) => (
           <Box key={index} style={tw`p-5 mb-5`} backgroundColor='white' borderWidth="1" borderColor="coolGray.300" rounded={8}>
             <View style={tw`flex-row items-center gap-3 justify-between mb-3`}>
