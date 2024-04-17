@@ -52,6 +52,7 @@
     "@types/jest": "^29.5.12",
     "@types/react": "^18.2.66",
     "@types/react-native": "^0.73.0",
+    "@types/react-native-charts-wrapper": "^0.5.11",
     "@types/react-native-onboarding-swiper": "^1.1.9",
     "@types/react-test-renderer": "^18.0.7",
     "barrelsby": "^2.8.1",

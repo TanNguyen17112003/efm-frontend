@@ -1,10 +1,5 @@
 import { Text, Box, View, Icon, Image, Button, ScrollView } from "native-base";
 import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
   StackedBarChart
 } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
