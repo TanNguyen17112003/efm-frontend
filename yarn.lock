@@ -3470,14 +3470,6 @@
   resolved "https://registry.yarnpkg.com/@types/range-parser/-/range-parser-1.2.7.tgz#50ae4353eaaddc04044279812f52c8c65857dbcb"
   integrity sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==
 
-"@types/react-native-charts-wrapper@^0.5.11":
-  version "0.5.11"
-  resolved "https://registry.yarnpkg.com/@types/react-native-charts-wrapper/-/react-native-charts-wrapper-0.5.11.tgz#205c2dffb15273e579daabc7adffafabbc626421"
-  integrity sha512-wntctaZsHEgVh6+FoPoNOEM5yH00WKJ1lhXzqTGcXCnfmCBUa9DawJzHU6t7PozbJZsT1fvZFC8z2mFhLAO9iA==
-  dependencies:
-    "@types/react" "*"
-    react-native "*"
-
 "@types/react-native-onboarding-swiper@^1.1.9":
   version "1.1.9"
   resolved "https://registry.npmjs.org/@types/react-native-onboarding-swiper/-/react-native-onboarding-swiper-1.1.9.tgz"
