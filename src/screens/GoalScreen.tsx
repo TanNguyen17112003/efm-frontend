@@ -1,29 +1,41 @@
 import { Box, Text, FlatList, View,  Icon, Progress, Image, ScrollView, ThreeDotsIcon } from "native-base"
 import { PlusCircleIcon } from "react-native-heroicons/solid";
 import { getAllGoals } from "@services";
-import { useEffect, useState } from "react";
+import {  useState, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
-import { getJWT } from "@utils";
+import { getJWT, mapCategory } from "@utils";
 import { Plus } from "@components";
 import tw from 'twrnc';
+
 export const GoalScreen = () => {
   const navigation = useNavigation();
-  const [goalList, setGoalList] = useState([]);
-  // useEffect(() => {
-  //   const fetchGoals = async () => {
-  //     try {
-  //       const token = getJWT();
-  //       const response = await getAllGoals(token);
-  //       console.log(response)
-  //       setGoalList(response);
-  //     }
-  //     catch (e) {
-  //       throw e
-  //     }
-  //   }
-  //   fetchGoals();
-  // }
-  // , [])
+  const [goalList, setGoalList] = useState<Goal[]>([]);
+  const modifyGoalList = (goalList: Goal[]) => {
+    const newGoalList = goalList.map(item => {
+      return {
+        ...item,
+        image: mapCategory(item.category)
+      }
+    })
+    setGoalList(newGoalList);
+  }
+  useFocusEffect(
+    useCallback(() => {
+    const fetchGoalList = async () => {
+      try {
+        const data = await getJWT();
+        if (data) {
+          const result = await getAllGoals(data.token);
+          modifyGoalList(result)
+      }
+      }
+      catch(e) {
+        throw e
+      }
+    }
+    fetchGoalList();
+    }, []))
   
   const formatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit' });
   const getDiffDate = (date: Date) => {
@@ -43,15 +55,14 @@ export const GoalScreen = () => {
             </Box>
       </Box>
       <ScrollView>
-        <Text>{goalList.length}</Text>
-      {/* {goalList.map((item, index) => (
-         <Box style={tw`p-5 mb-5`} backgroundColor='white' borderWidth="1" borderColor="coolGray.300" rounded={8}>
+      {goalList.map((item, index) => (
+         <Box key={index} style={tw`p-5 mb-5`} backgroundColor='white' borderWidth="1" borderColor="coolGray.300" rounded={8}>
          <View style={tw`flex-row items-center justify-between mb-3`}>
            <Box style={tw`flex-row items-center gap-3`}>
-               <Image source={item.category} alt="Category" style={tw`w-10 h-10`} />
+               <Image source={item.image} alt="Category" style={tw`w-10 h-10`} />
                <View>
                    <Text bold>{item.title}</Text>
-                   <Text opacity={50}>{`${formatter.format(item.dueDate)}, ${item.dueDate.getFullYear()}`}</Text>
+                   <Text opacity={50}>{`${formatter.format(new Date(item.date))}, ${new Date(item.date).getFullYear()}`}</Text>
                </View>
            </Box>
              
@@ -59,14 +70,14 @@ export const GoalScreen = () => {
          </View>
          <View style={tw`flex-row items-center justify-between mb-3`}>
            <Box style={tw`flex-row items-center gap-3`}>
-             <Text bold fontSize='2xl'>{`${item.currentMoney / 1000000}M VNĐ`}</Text>
-             <Text>{`saved of ${item.totalMoney / 1000000}M VNĐ`}</Text>
+             <Text bold fontSize='2xl'>{`${item.current / 1000000}M VNĐ`}</Text>
+             <Text>{`saved of ${item.target / 1000000}M VNĐ`}</Text>
            </Box>
-             <Text italic>{`${getDiffDate(item.dueDate)} days left`}</Text>
+             <Text italic>{`${getDiffDate(new Date(item.date))} days left`}</Text>
          </View>
-         <Progress w="300" shadow={2} value={item.currentMoney / item.totalMoney * 100} style={tw`mb-3`}/>
+         <Progress w="300" shadow={2} value={item.current / item.target * 100} style={tw`mb-3`}/>
     </Box>
-      ) )} */}
+      ) )}
       </ScrollView>
     </Box>
   )

@@ -1,12 +1,12 @@
 import { Text, Box, View, Icon, Image, Button, ScrollView } from "native-base";
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart
-} from "react-native-chart-kit";
+// import {
+//   LineChart,
+//   BarChart,
+//   PieChart,
+//   ProgressChart,
+//   ContributionGraph,
+//   StackedBarChart
+// } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
 import { BellIcon } from "react-native-heroicons/solid";
 import { getJWT } from "@utils";
@@ -107,7 +107,7 @@ export const HomeScreen = () => {
   return (
 
     <Box>
- <StackedBarChart
+ {/* <StackedBarChart
   data={{
     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     legend: ['Income', 'Expense'],
@@ -120,7 +120,7 @@ export const HomeScreen = () => {
     backgroundColor: '#1cc910',
     backgroundGradientFrom: '#eff3ff',
     backgroundGradientTo: '#efefef',
-    decimalPlaces: 2,
+    decimalPlaces: 1,
     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     style: {
       borderRadius: 16,
@@ -132,7 +132,7 @@ export const HomeScreen = () => {
     marginLeft: 8,
     marginRight: 8,
   }}
-/>
+/> */}
       <Box backgroundColor="blue.700" padding={10}>
         <View style={tw`flex-row items-center justify-between`} marginBottom={5}>
             <Box>
@@ -149,7 +149,7 @@ export const HomeScreen = () => {
           <Button color="white" backgroundColor="gray.800" bgColor="blue.400">View detail</Button>
         </View>
       </Box>
-      <ScrollView h={300}>
+      <ScrollView h={600}>
         {listActivities.map((item, index) => (
           <Box key={index} style={tw`p-5 mb-5`} backgroundColor='white' borderWidth="1" borderColor="coolGray.300" rounded={8}>
             <View style={tw`flex-row items-center gap-3 justify-between mb-3`}>
@@ -169,4 +169,3 @@ export const HomeScreen = () => {
     </Box>
   )
 }
-
