@@ -37,7 +37,6 @@ export const GoalScreen = () => {
         }
         fetchGoalList();
       },[goalList])
-    
     )
   
   const formatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit' });
@@ -58,7 +57,10 @@ export const GoalScreen = () => {
             </Box>
       </Box>
       <ScrollView>
-      {goalList.map((item, index) => (
+      {goalList.length == 0 && <Box style={tw`flex-row items-center justify-center h-100`}>
+        <Text fontSize={28} color={'red.700'} bold>You do not have any goals yet.</Text>
+        </Box>}
+      {goalList.length > 0 && goalList.map((item, index) => (
          <TouchableOpacity onPress={() => navigation.navigate('UpdateGoal', {id: item._id})} >
          <Box key={index} style={tw`p-5 mb-5`} backgroundColor='white' borderWidth="1" borderColor="coolGray.300" rounded={8}>
          <View style={tw`flex-row items-center justify-between mb-3`}>

@@ -4,11 +4,11 @@ import { useState, useEffect, useRef} from 'react';
 import {  Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { CalendarDaysIcon } from 'react-native-heroicons/solid';
+import { CalendarDaysIcon, ViewColumnsIcon, PencilIcon, WalletIcon  } from 'react-native-heroicons/solid';
 import { useRoute } from "@react-navigation/native";
 import { getJWT, mapCategory } from "@utils";
 import { getGoalById, configGoalById, deleteGoalById } from "@services";
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export const UpdateGoalScreen = () => {
     const cancelRef = useRef(null);
@@ -82,7 +82,10 @@ export const UpdateGoalScreen = () => {
                     <Progress w="300" shadow={2} value={goal.current / goal.target * 100} marginBottom={2}/>
                </Box>}
                <FormControl padding={5} style={tw`h-full`}>
-               <FormControl.Label><Text fontSize={"2xl"} bold color="blue.700">Date</Text></FormControl.Label>
+               <FormControl.Label style={tw`flex-row items-center gap-2`}>
+                  <Text fontSize={"2xl"} bold color="blue.700">Date</Text>
+                  <Icon as={<CalendarDaysIcon size={16}/>} mr="3" color="blue.700"/>
+                </FormControl.Label>
                {show && (
       <RNDateTimePicker
         testID="dateTimePicker"
@@ -97,11 +100,13 @@ export const UpdateGoalScreen = () => {
               value={modifiedDate.toLocaleDateString()} 
               onPressIn={() => setShow(true)}
               placeholder="Select a date"
-              InputRightElement={<Icon as={<CalendarDaysIcon size={16}/>} mr="3" color="blue.700"  onPress={() => setShow(true)} />}
             />
                 <View style={tw`flex-row gap-3`}>
                 <Box width={'50%'}>
-                <FormControl.Label><Text fontSize={"2xl"} bold color="blue.700">Current</Text></FormControl.Label>
+                <FormControl.Label  style={tw`flex-row items-center gap-2`}>
+                  <Text fontSize={"2xl"} bold color="blue.700">Current</Text>
+                  <Icon as={<WalletIcon size={16}/>} mr="3" color="blue.700"/>
+                </FormControl.Label>
                 <Input
                     value={current.toString()}
                     placeholder= 'Enter update current money'
@@ -111,7 +116,10 @@ export const UpdateGoalScreen = () => {
                 <Box
                     width={'50%'}
                 >
-                <FormControl.Label><Text fontSize={"2xl"} bold color="blue.700">Target</Text></FormControl.Label>
+                <FormControl.Label  style={tw`flex-row items-center gap-2`}>
+                  <Text fontSize={"2xl"} bold color="blue.700">Target</Text>
+                  <Icon as={MaterialCommunityIcons} name='bullseye-arrow' size={5} color="blue.700"/>
+                </FormControl.Label>
                 <Input
                     value={target.toString()}
                     placeholder= 'Enter update target money'

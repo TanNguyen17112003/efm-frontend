@@ -1,12 +1,13 @@
 import tw from 'twrnc';
-import { Box, Text, Icon, Heading, ChevronLeftIcon, FormControl, Select, Input, Button, Image } from "native-base"
+import { Box, View, Text, Icon, Heading, ChevronLeftIcon, FormControl, Select, Input, Button, Image } from "native-base"
 import React, { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { CalendarDaysIcon } from 'react-native-heroicons/solid';
+import { CalendarDaysIcon, PencilIcon, ViewColumnsIcon, WalletIcon } from 'react-native-heroicons/solid';
 import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { createGoal } from '@services';
 import { getJWT } from '@utils';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export const AddGoalScreen = () => {
   const navigation = useNavigation();
@@ -108,8 +109,10 @@ export const AddGoalScreen = () => {
 </Box>
 
       <FormControl padding={5}>
-        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Category</Text></FormControl.Label>
-       
+        <FormControl.Label style={tw`flex-row items-center gap-2`}>
+          <Text fontSize={"2xl"} bold color="blue.700">Category</Text>
+          <Icon as={<ViewColumnsIcon size={16}/>} mr="3" color="blue.700" />
+        </FormControl.Label>
         <Select 
           shadow={2} 
           selectedValue={category} 
@@ -123,14 +126,20 @@ export const AddGoalScreen = () => {
           )) 
           }
         </Select>
-        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Goal Title</Text></FormControl.Label>
-        <Input placeholder='Write your goal title' value={title} onChangeText={setTitle}/>
-        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Goal date</Text></FormControl.Label>
+        <FormControl.Label style={tw`flex-row items-center gap-2`}>
+          <Text fontSize={"2xl"} bold color="blue.700">Goal Title</Text>
+          <Icon as={<PencilIcon size={16}/>} mr="3" color="blue.700" />
+        </FormControl.Label>
+        <Input placeholder='Write your goal title' value={title} onChangeText={setTitle} marginBottom={5}/>
+        <FormControl.Label style={tw`flex-row items-center gap-2`}>
+          <Text fontSize={"2xl"} bold color="blue.700">Goal date</Text>
+          <Icon as={<CalendarDaysIcon size={16}/>} mr="3" color="blue.700"/>
+        </FormControl.Label>
             <Input 
               value={date.toLocaleDateString()} 
               onPressIn={() => setShow(true)}
               placeholder="Select a date"
-              InputRightElement={<Icon as={<CalendarDaysIcon size={16}/>} mr="3" color="blue.700"  onPress={() => setShow(true)} />}
+              marginBottom={5}
             />
           {show && (
       <RNDateTimePicker
@@ -142,18 +151,30 @@ export const AddGoalScreen = () => {
         onChange={onChange}
       />
     )}
-        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Goal target</Text></FormControl.Label>
+        <View style={tw`flex-row items-center justify-center gap-2`} >
+          <Box width={'50%'}>
+          <FormControl.Label style={tw`flex-row items-center gap-2`}>
+            <Text fontSize={"2xl"} bold color="blue.700">Goal target</Text>
+            <Icon as={MaterialCommunityIcons} name='bullseye-arrow' size={5} color="blue.700"/>
+          </FormControl.Label>
             <Input
               placeholder='Enter target money'
               value={target.toString()}
               onChangeText={(value) => setTarget(Number(value))}
             />
-        <FormControl.Label><Text fontSize={"2xl"} bold color="black.700">Goal saved</Text></FormControl.Label>
+          </Box>
+        <Box width={'50%'}>
+        <FormControl.Label style={tw`flex-row items-center gap-2`}>
+          <Text fontSize={"2xl"} bold color="blue.700">Goal current</Text>
+          <Icon as={<WalletIcon size={16}/>} mr="3" color="blue.700"/>
+        </FormControl.Label>
             <Input
               placeholder='Enter saved money'
               value={saved.toString()}
               onChangeText={(value) => setSaved(Number(value))}
             />
+        </Box>
+        </View>
         <Button marginY={10} backgroundColor="blue.800" onPress={handleAddGoal}>Create</Button>
       </FormControl>
 
