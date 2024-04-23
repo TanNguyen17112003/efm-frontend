@@ -1,13 +1,16 @@
 import tw from 'twrnc';
 import { Box, Text, Icon, View, Heading, ChevronLeftIcon, FormControl, Select, Input, Button, HStack } from "native-base"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CalendarDaysIcon } from 'react-native-heroicons/solid';
 import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { createChallenge } from '@services';
+import { getJWT } from '@utils';
 
 export const AddChallengeScreen = () => {
   const navigation = useNavigation();
+  const [token, setToken] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -15,12 +18,35 @@ export const AddChallengeScreen = () => {
   const [target, setTarget] = useState<number>(0);
 
   const [show, setShow] = useState<boolean>(false);
-  
+
+  // useEffect(() => {
+  //   const getToken = async () => {
+  //     const data = await getJWT();
+  //     if (data) {
+  //       setToken(data.token);
+  //     }
+  //   }
+  //   getToken();
+  // },[])
+
   const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
     setShow(false);
   };
+
+  const handleAddChallenge = () => {
+    createChallenge(
+      token,
+      category,
+      name,
+      description,
+      date,
+      target,
+      0
+    );
+    navigation.navigate("Challenge");
+  }
 
   const styles = StyleSheet.create({
     container: {
@@ -154,7 +180,7 @@ export const AddChallengeScreen = () => {
               onChangeText={(value) => setTarget(Number(value))}
             />
 
-        <Button marginY={10} backgroundColor="blue.800">Create Challenge</Button>
+        <Button marginY={10} backgroundColor="blue.800" onPress={handleAddChallenge}>Create Challenge</Button>
       </FormControl>
     </Box>
   )
