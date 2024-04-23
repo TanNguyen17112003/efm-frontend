@@ -3,6 +3,8 @@
  */
 
 export * from './AddActivityScreen';
+export * from './AddChallengeScreen';
+export * from './FriendScreen';
 export * from './AddGoalScreen';
 export * from './ChallengeScreen';
 export * from './GoalScreen';
