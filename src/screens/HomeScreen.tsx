@@ -16,6 +16,8 @@ import { useState, useEffect } from "react";
 import { mapCategory } from "@utils";
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
+import { useAppDispatch, useAppSelector } from "src/hooks/redux";
+import { RootState } from "src/store";
 type Activity = {
   category: string;
   content: string;
@@ -38,6 +40,9 @@ export const HomeScreen = () => {
     setListActivities(newActivityList);
   }
   
+  const dispatch = useAppDispatch()
+  const {user} = useAppSelector((state: RootState) => ({...state}))
+  console.log(user)
   useFocusEffect(
   React.useCallback(() => {
     const getUserData = async () => {
@@ -132,7 +137,7 @@ export const HomeScreen = () => {
         <View style={tw`flex-row items-center justify-between`} marginBottom={5}>
             <Box>
                 <Text color="white" bold>{userName}</Text>
-                <Text color="gray.100" opacity={40}>{getExactTime()}</Text>
+                <Text color="gray.100" opacity={40}>{getExactTime()} - {(!user.loading)?user.name:""}</Text>
             </Box>
             <Icon as={<BellIcon size={30} />} color="white" />
         </View>
