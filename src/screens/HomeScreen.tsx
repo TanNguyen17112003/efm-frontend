@@ -16,14 +16,7 @@ import { useState, useEffect } from "react";
 import { mapCategory } from "@utils";
 import { useFocusEffect } from "@react-navigation/native";
 import React from "react";
-type Activity = {
-  category: string;
-  content: string;
-  amount: number;
-  type: string;
-  createdAt: Date;
-  image: any;
-}
+
 export const HomeScreen = () => {
   const [monthlyTotals, setMonthlyTotals] = useState(Array.from({length: 12}, () => ({ income: 0, expense: 0 })));
   const [userName, setUserName] = useState<string>('');
