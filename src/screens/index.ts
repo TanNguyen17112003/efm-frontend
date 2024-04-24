@@ -3,13 +3,17 @@
  */
 
 export * from './AddActivityScreen';
+export * from './AddChallengeScreen';
 export * from './AddGoalScreen';
 export * from './ChallengeScreen';
+export * from './DetailChallengeScreen';
+export * from './FriendScreen';
 export * from './GoalScreen';
 export * from './HomeScreen';
 export * from './LoginScreen';
 export * from './MenuScreen';
 export * from './OnboardingScreen';
+export * from './ShareScreen';
 export * from './SignupScreen';
 export * from './SplashScreen';
 export * from './SuccessScreen';
