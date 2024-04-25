@@ -4,11 +4,10 @@ import { Box, Text, FlatList, View, Input, Pressable, Icon, Progress, Image, Scr
 import { PlusCircleIcon, BellIcon, MagnifyingGlassIcon, TrashIcon, UserIcon, CheckIcon, PlusIcon } from "react-native-heroicons/solid"
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc';
+import { getAllUsers, getInformation } from "@services";
+import { getJWT } from "@utils";
+import { modifyConfigAsync } from "expo/config";
 
-type User = {
-    name: string,
-    image: string,
-}
 
 const invitationList = [
     {
@@ -87,17 +86,53 @@ export const FriendScreen = () => {
     const [tab, setTab] = useState<string>('Invitations');
     const [dataList, setDataList] = useState<User[]>(invitationList);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-
-    useMemo(() => {
+    const modifyList = (list: User[], id: string) => {
+        const newList =  list.map((item) => {
+            return {
+                ...item,
+                image: item.image ? item.image : 'https://cdn.pixabay.com/photo/2017/02/23/13/05/avatar-2092113_1280.png'
+            }
+        })
+        const exceptList = newList.filter((item) => item.id !== id)
+        console.log(exceptList)
+        setDataList(exceptList)
+    }
+    useMemo(async () => {
         if (tab === "Invitations") {
             setIsExpanded(false);
             setDataList(invitationList)
         } else {
             setIsExpanded(false);
-            setDataList(suggestionList)
+            const tokenInformation = await getJWT();
+            if (tokenInformation) {
+                const userId = await getInformation(tokenInformation.token);
+                if (userId) {
+                    const users = await getAllUsers(tokenInformation.token);
+                    modifyList(users, userId._id)
+                }
+                
+            }
         }
     }, [tab])
-
+    const handleSearch = async (text: string) => {
+        if (text === '') {
+            if (tab === "Invitations") {
+                setDataList(invitationList)
+            } else {
+                const tokenInformation = await getJWT();
+                if (tokenInformation) {
+                    const userId = await getInformation(tokenInformation.token);
+                    if (userId) {
+                        const users = await getAllUsers(tokenInformation.token);
+                        modifyList(users, userId._id)
+                    }
+                }
+            }
+        } else {
+            const filteredList = dataList.filter((item) => item.name.toLowerCase().includes(text.toLowerCase()))
+            setDataList(filteredList)
+        }
+    }
     return (
         <Box flex={1}>
             <Box
@@ -123,6 +158,7 @@ export const FriendScreen = () => {
                     </Pressable>}
                     type="text" 
                     backgroundColor='white'
+                    onChangeText={text => handleSearch(text)}
                 />
                 <Box style={tw`flex-row justify-around`} w={'100%'} mt={4}>
                     {tabs.map((item, index) => (    

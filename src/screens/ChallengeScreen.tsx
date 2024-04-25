@@ -6,6 +6,7 @@ import tw from 'twrnc';
 import { getAllChallenges } from "@services";
 import { getJWT } from "@utils";
 import { useCallback, useEffect, useState } from "react";
+import { Drawer } from "@components";
 
 const iconList = {
     'Salary': {
@@ -190,6 +191,7 @@ export const ChallengeScreen = () => {
             )}
         />
         </SafeAreaView>
+    <Drawer />
     </Box>
   )
 }

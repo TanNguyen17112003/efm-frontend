@@ -38,3 +38,17 @@ export const getInformation = async (token: string) => {
     }
 }
 
+export const getAllUsers = async(token: string) => {
+    try {
+        const response = await axiosInstance.get('/user/all', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    }
+    catch(e) {
+        throw e
+    }
+}
+

@@ -21,3 +21,11 @@ export const getJWT = async () => {
         throw e;
     }
 }
+
+export const clearJWT = async () => {
+    try {
+        await Keychain.resetGenericPassword();
+    } catch (e) {
+        throw e;
+    }
+}
