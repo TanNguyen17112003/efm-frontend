@@ -3,3 +3,21 @@ interface User {
     name: string;
     image: string;
 }
+
+interface Request {
+    _id: string;
+    from: {
+        _id: string;
+        name: string;
+    };
+    to: string;
+    accepted: boolean;
+    createdAt: string;
+    __v: number;
+    image: any;
+}
+
+interface Friend {
+    _id: string;
+    name: string;
+}

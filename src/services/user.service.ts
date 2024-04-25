@@ -52,3 +52,62 @@ export const getAllUsers = async(token: string) => {
     }
 }
 
+export const sendFriendRequest = async(token: string, id: string) => {
+    try {
+        const response = await axiosInstance.post(`/user/request/${id}`, {},
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data.message;
+    }
+    catch (e) {
+        throw e
+    }
+}
+
+export const acceptFriendRequest = async(token: string, id: string) => {
+    try {
+        const response = await axiosInstance.put(`/user/request/${id}`, 
+        {},
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data.message;
+    }
+    catch (e) {
+        throw e
+    }
+}
+
+export const getAllRequests = async(token: string) => {
+    try {
+        const response = await axiosInstance.get('/user/request', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    }
+    catch (e) {
+        throw e
+    }
+}
+
+export const getAllFriends = async(token: string) => {
+    try {
+        const response = await axiosInstance.get('/user/friends', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    }
+    catch (e) {
+        throw e
+    }
+}
+
