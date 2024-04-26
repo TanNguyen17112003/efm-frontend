@@ -111,3 +111,31 @@ export const getAllFriends = async(token: string) => {
     }
 }
 
+export const getAllMyRequests = async (token: string) => {
+    try {
+        const response = await axiosInstance.get('user/my-request' , {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data;
+    }
+    catch (e) {
+        throw e
+    }
+}
+
+export const rejectRequest = async (token: string, id: string) => {
+    try {
+        const response = await axiosInstance.put(`/user/request/${id}/reject`, {}, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        return response.data.message;
+    }
+    catch (e) { 
+        throw e
+    }
+}
+

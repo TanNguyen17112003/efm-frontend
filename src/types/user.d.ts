@@ -2,6 +2,7 @@ interface User {
     id: string;
     name: string;
     image: string;
+    sent: any;
 }
 
 interface Request {
@@ -15,6 +16,7 @@ interface Request {
     createdAt: string;
     __v: number;
     image: any;
+   
 }
 
 interface Friend {

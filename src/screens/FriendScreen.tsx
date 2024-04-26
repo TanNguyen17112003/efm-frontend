@@ -5,7 +5,7 @@ import { PlusCircleIcon, BellIcon, MagnifyingGlassIcon, TrashIcon, UserIcon, Che
 import { TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc';
-import { getAllUsers, getInformation, getAllRequests, getAllFriends, acceptFriendRequest, sendFriendRequest } from "@services";
+import { getAllMyRequests, getAllUsers, getInformation, getAllRequests, getAllFriends, acceptFriendRequest, sendFriendRequest, rejectRequest } from "@services";
 import { getJWT } from "@utils";
 import { modifyConfigAsync } from "expo/config";
 
@@ -16,6 +16,7 @@ export const FriendScreen = () => {
     const requestRef = useRef(null);
     const navigation = useNavigation();
     const [denyId, setDenyId] = useState<string | null>(null);
+    const [sentInvitations, setSentInvitations] = useState<string[]>([]);
     const [isShowDenyDialog, setIsShowDenyDialog] = useState<boolean>(false);
     const [isShowAcceptDialog, setIsShowAcceptDialog] = useState<boolean>(false);
     const tabs = ["Invitations", "Suggestions"];
@@ -25,7 +26,7 @@ export const FriendScreen = () => {
     const [requestList, setRequestList] = useState<Request[]>([]);
     const [originalRequestList, setOriginalRequestList] = useState<Request[]>([]);
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const modifyListInvitations = (list: User[], id: string, friendList: Friend[]) => {
+    const modifyListInvitations = (list: User[], id: string, friendList: Friend[], myRequestList: Request[]) => {
         const suggestionExceptFriendList = list.filter((item) => !friendList.some((friend) => friend._id === item.id))
         const suggestionExceptRequestList = suggestionExceptFriendList.filter((item) => !requestList.some((request) => request.from._id === item.id))
         const newList =  suggestionExceptRequestList.map((item) => {
@@ -34,7 +35,20 @@ export const FriendScreen = () => {
                 image: item.image ? item.image : 'https://cdn.pixabay.com/photo/2017/02/23/13/05/avatar-2092113_1280.png'
             }
         })
-        const exceptList = newList.filter((item) => item.id !== id)
+        const newNotSentList = newList.map((item) => {
+            if (myRequestList.some((request) => request.to === item.id)) {
+                return {
+                    ...item,
+                    sent: true
+                }
+            }
+            return {
+                ...item,
+                sent: false
+            }
+        }
+        )
+        const exceptList = newNotSentList.filter((item) => item.id !== id)
         setDataList(exceptList)
         setOriginalDataList(exceptList)
     }
@@ -49,27 +63,7 @@ export const FriendScreen = () => {
         setRequestList(newList)
         setOriginalRequestList(newList)
     }
-    useMemo(async () => {
-        if (tab === "Invitations") {
-            setIsExpanded(false);
-            const tokenInfomation = await getJWT();
-            if (tokenInfomation) {
-                    const requests = await getAllRequests(tokenInfomation.token)
-                    modifyListRequest(requests)
-                }
-        } else {
-            setIsExpanded(false);
-            const tokenInformation = await getJWT();
-            if (tokenInformation) {
-                const userId = await getInformation(tokenInformation.token);
-                if (userId) {
-                    const users = await getAllUsers(tokenInformation.token);
-                    const friends = await getAllFriends(tokenInformation.token)
-                    modifyListInvitations(users, userId._id, friends)
-                }
-            }
-        }
-    }, [tab])
+    
     const handleSearch = async (text: string) => {
         if (text === '') {
             if (tab === "Invitations") {
@@ -85,7 +79,8 @@ export const FriendScreen = () => {
                 if (userId) {
                     const users = await getAllUsers(tokenInformation.token);
                     const friends = await getAllFriends(tokenInformation.token)
-                    modifyListInvitations(users, userId._id, friends)
+                    const myRequests = await getAllMyRequests(tokenInformation.token)
+                    modifyListInvitations(users, userId._id, friends, myRequests)
                 }
             }
             }
@@ -121,6 +116,7 @@ export const FriendScreen = () => {
             const tokenInformation = await getJWT();
             if (tokenInformation) {
                 const response = await sendFriendRequest(tokenInformation.token, id);
+                setSentInvitations(prev => [...prev, id])
                 console.log(response)
             }
        }
@@ -133,14 +129,44 @@ export const FriendScreen = () => {
         setIsShowDenyDialog(true);
     }
     const handleDenyInvitationConfirm = async () => {
-        if (denyId) {
-            // Perform the denial here using denyId
-            // For example:
-            // await denyFriendRequest(tokenInformation.token, denyId);
+        try {
+            if (denyId) {
+                const tokenInformation = await getJWT();
+                if (tokenInformation) {
+                    const response = await rejectRequest(tokenInformation.token, denyId);
+                    const requests = await getAllRequests(tokenInformation.token);
+                    modifyListRequest(requests)
+                }
+            }
+            setDenyId(null);
+            setIsShowDenyDialog(false);
         }
-        setDenyId(null);
-        setIsShowDenyDialog(false);
+        catch (e) {
+            throw e
+        }
     }
+    useMemo(async () => {
+        if (tab === "Invitations") {
+            setIsExpanded(false);
+            const tokenInfomation = await getJWT();
+            if (tokenInfomation) {
+                    const requests = await getAllRequests(tokenInfomation.token)
+                    modifyListRequest(requests)
+                }
+        } else {
+            setIsExpanded(false);
+            const tokenInformation = await getJWT();
+            if (tokenInformation) {
+                const userId = await getInformation(tokenInformation.token);
+                if (userId) {
+                    const users = await getAllUsers(tokenInformation.token);
+                    const friends = await getAllFriends(tokenInformation.token)
+                    const myRequests = await getAllMyRequests(tokenInformation.token)
+                    modifyListInvitations(users, userId._id, friends, myRequests)
+                }
+            }
+        }
+    }, [tab])
     return (
         <Box flex={1}>
             <Box
@@ -214,7 +240,7 @@ export const FriendScreen = () => {
                                 {tab === 'Invitations' ? 
                                     <TouchableOpacity onPress={() => handleAcceptInvitaion(item._id)}><Badge colorScheme="success">Accept</Badge></TouchableOpacity>
                                     :
-                                    <TouchableOpacity onPress={() => handleSendInvitation(item.id)}><Badge colorScheme="primary">Send invitation</Badge></TouchableOpacity>
+                                    ((!sentInvitations.includes(item.id) || item.sent !== true) ? <TouchableOpacity onPress={() => handleSendInvitation(item.id)}><Badge colorScheme="primary">Send invitation</Badge></TouchableOpacity> : <TouchableOpacity disabled><Badge colorScheme="light">Invitation was sent</Badge></TouchableOpacity>)
                                     // <PlusIcon size={20} color={'blue'} onPress={() => handleSendInvitation(item.id)}/>
                                 }
                                 {tab === 'Invitations' ? <TouchableOpacity onPress={() => handleDenyInvitationOpen(item._id)}><Badge colorScheme="danger">Deny</Badge></TouchableOpacity> : <></>}
