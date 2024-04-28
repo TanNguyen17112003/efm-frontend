@@ -28,7 +28,7 @@ export const getUser = createAsyncThunk<UserRespone, any, { rejectValue: FetchEr
           Authorization: `Bearer ${params.token}`
         }
       };
-      const url = 'https://efm-backend-production-bf79.up.railway.app/api/user/profile';
+      const url = `${Config.API_URL}user/profile`;
       const response = await axios.get(url, config);
       return response.data;
     } catch (error) {

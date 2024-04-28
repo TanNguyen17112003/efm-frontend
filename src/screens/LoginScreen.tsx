@@ -11,6 +11,7 @@ import {
   View,
   ChevronLeftIcon
 } from 'native-base';
+import ModalConfirm from 'src/components/Modal';
 import { useNavigation } from '@react-navigation/native';
 import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/solid';
 import { login } from '@services';
@@ -18,7 +19,6 @@ import { storeJWT } from '@utils';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { useSigninMutation } from 'src/services/users';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getUser } from 'src/store/reducers/user';
 import { RootState } from 'src/store';
 import { storeAsyncStorage } from 'src/helper';
@@ -27,6 +27,7 @@ import tw from 'twrnc';
 export const LoginScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
   const { user } = useAppSelector((state: RootState) => ({ ...state }));
   const [inputError, setInputError] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -38,7 +39,7 @@ export const LoginScreen = () => {
   const handleLogin = async () => {
     try {
       await fetchOne({ email: email, password: password });
-      //await storeJWT(data);
+      if (!data || !data.token) setModalVisible(true);
     } catch (error) {
       console.error('Error occurred during login:', error);
     }
@@ -46,6 +47,7 @@ export const LoginScreen = () => {
 
   useEffect(() => {
     if (loginError) {
+      if (!data) setModalVisible(true);
     } else if (data) {
       if (data.token) {
         storeAsyncStorage('user', {
@@ -54,13 +56,18 @@ export const LoginScreen = () => {
           name: data.name
         });
         dispatch(getUser({ token: data.token, email: email }));
-        navigation.navigate('DrawerStack')
+        navigation.navigate('DrawerStack');
       }
     }
   }, [loginError, data]);
 
   return (
     <View backgroundColor='white' position='relative' height='100%'>
+      <ModalConfirm
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        content={'Invalid email or password!'}
+      />
       <Pressable
         flexDirection='row'
         display='flex'

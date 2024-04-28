@@ -4,83 +4,11 @@ import { NavigationHelpersContext, useNavigation } from "@react-navigation/nativ
 
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from "expo-web-browser";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
-import { makeRedirectUri } from "expo-auth-session";
-import InAppBrowser from "react-native-inappbrowser-reborn";
 
 
 WebBrowser.maybeCompleteAuthSession();
 const redirectUri = AuthSession.makeRedirectUri();
 export const WelcomeScreen = () => {
-    // const discovery = AuthSession.useAutoDiscovery
-    // const [userInfo, setUserInfo] = useState(null);
-    // const [request, response, promptAsync] = AuthSession.useAuthRequest({
-    //   clientId: "877844441244-ndqdqgbnlmnp6eu65mk20ic03s8uhi40.apps.googleusercontent.com",
-    //   redirectUri
-    // },
-    // );
-    // useEffect(() => {
-    //   handleSignInWithGoogle();
-    // }, [response]);
-    // const handleSignInWithGoogle = async () => {
-    //   const user = await AsyncStorage.getItem("@user");
-    //   if (!user) {
-    //     if(response?.type === "success") {
-    //       await getUserInfo(response.authentication?.accessToken);
-    //     }
-    //   } 
-    //   else {
-    //     setUserInfo(JSON.parse(user));
-    //   }
-    // }
-    // const getUserInfo = async (token: string | undefined) => {
-    //   if (!token) return;
-    //   try {
-    //     const response = await fetch(
-    //       "https://www.googleapis.com/userinfo/v2/me",
-    //       {
-    //         headers: {Authorization: `Bearer ${token}` }
-    //       }
-    //     );
-    //     const user = await response.json();
-    //     await AsyncStorage.setItem("@user", JSON.stringify(user));
-    //     setUserInfo(user);
-    //   }
-    //   catch (error) {
-    //     console.log(error);
-      
-    //   }
-    // }
-    const handleOpenInAppBrowser = async () => {
-      const redirectUri = "exp://10.229.192.239:8081/DrawerStak";
-      const authUrl = "https://efm-backend-production.up.railway.app/google";
-        try {
-          const response = await InAppBrowser.openAuth(authUrl, redirectUri, {});
-          console.log(response)
-          navigation.navigate('DrawerStack');
-          // Handle the access token (e.g., store it in state, perform actions, etc.)
-        }
-        catch (e) {
-          console.error(e)
-        }
-    };
-    // const handleGoogleSignIn = async () => {
-    //   const redirectUrl = makeRedirectUri({ useProxy: true });
-    //   const authUrl = `https://efm-backend-production.up.railway.app/google?redirect_uri=${encodeURIComponent(redirectUrl)}`;
-    
-    //   try {
-    //     const result = await WebBrowser.openAuthSessionAsync(authUrl, redirectUrl);
-    
-    //     if (result.type === 'success') {
-    //     } else {
-    //       // The user did not authenticate successfully. You can handle this however you like in your UI.
-    //       console.log('User cancelled');
-    //     }
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // };
     const navigation = useNavigation();
   return (
     <Box backgroundColor="white" height='100%'>

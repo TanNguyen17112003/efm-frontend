@@ -13,10 +13,12 @@ import {
   REGISTER,
 } from "redux-persist";
 import { UserReducers } from "./reducers/user";
+import { activitiesReducer } from "./reducers/activities"
 
 const reducers = combineReducers({
   api: API.reducer,
-  user: UserReducers
+  user: UserReducers,
+  activity: activitiesReducer
 });
 
 const persistConfig = {

@@ -1,4 +1,5 @@
 interface Activity {
+    _id: string;
     category: string;
     content: string;
     amount: number;
