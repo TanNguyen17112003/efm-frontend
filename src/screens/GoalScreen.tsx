@@ -1,7 +1,8 @@
 import { Box, Text, FlatList, View,  Icon, Progress, Image, ScrollView, ThreeDotsIcon } from "native-base"
+import { TouchableOpacity } from "react-native";
 import { PlusCircleIcon } from "react-native-heroicons/solid";
 import { getAllGoals } from "@services";
-import {  useState, useCallback } from "react";
+import {  useState, useCallback, useEffect } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import { getJWT, mapCategory } from "@utils";
@@ -20,22 +21,23 @@ export const GoalScreen = () => {
     })
     setGoalList(newGoalList);
   }
-  useFocusEffect(
-    useCallback(() => {
-    const fetchGoalList = async () => {
-      try {
-        const data = await getJWT();
-        if (data) {
-          const result = await getAllGoals(data.token);
-          modifyGoalList(result)
-      }
-      }
-      catch(e) {
-        throw e
-      }
-    }
-    fetchGoalList();
-    }, []))
+    useFocusEffect(
+      useCallback(() => {
+        const fetchGoalList = async () => {
+          try {
+            const data = await getJWT();
+            if (data) {
+              const result = await getAllGoals(data.token);
+              modifyGoalList(result)
+          }
+          }
+          catch(e) {
+            throw e
+          }
+        }
+        fetchGoalList();
+      },[goalList])
+    )
   
   const formatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit' });
   const getDiffDate = (date: Date) => {
@@ -55,7 +57,11 @@ export const GoalScreen = () => {
             </Box>
       </Box>
       <ScrollView>
-      {goalList.map((item, index) => (
+      {goalList.length == 0 && <Box style={tw`flex-row items-center justify-center h-100`}>
+        <Text fontSize={28} color={'red.700'} bold>You do not have any goals yet.</Text>
+        </Box>}
+      {goalList.length > 0 && goalList.map((item, index) => (
+         <TouchableOpacity onPress={() => navigation.navigate('UpdateGoal', {id: item._id})} >
          <Box key={index} style={tw`p-5 mb-5`} backgroundColor='white' borderWidth="1" borderColor="coolGray.300" rounded={8}>
          <View style={tw`flex-row items-center justify-between mb-3`}>
            <Box style={tw`flex-row items-center gap-3`}>
@@ -68,15 +74,16 @@ export const GoalScreen = () => {
              
              <ThreeDotsIcon color="gray.500"/>
          </View>
-         <View style={tw`flex-row items-center justify-between mb-3`}>
+         <View style={tw`flex-row items-center justify-between`}>
            <Box style={tw`flex-row items-center gap-3`}>
              <Text bold fontSize='2xl'>{`${item.current / 1000000}M VNĐ`}</Text>
              <Text>{`saved of ${item.target / 1000000}M VNĐ`}</Text>
            </Box>
-             <Text italic>{`${getDiffDate(new Date(item.date))} days left`}</Text>
          </View>
+         <Text marginBottom={3} italic>{`${getDiffDate(new Date(item.date))} days left`}</Text>
          <Progress w="300" shadow={2} value={item.current / item.target * 100} style={tw`mb-3`}/>
-    </Box>
+         </Box>
+    </TouchableOpacity>
       ) )}
       </ScrollView>
     </Box>

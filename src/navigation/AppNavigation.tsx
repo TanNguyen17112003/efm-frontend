@@ -1,6 +1,6 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { AddGoalScreen, SuccessScreen, SignupScreen, WelcomeScreen, SplashScreen, OnboardingScreen, LoginScreen, HomeScreen, MenuScreen, GoalScreen, ChallengeScreen, AddActivityScreen } from "@screens";
+import { AddChallengeScreen, DetailChallengeScreen, ShareScreen, AddGoalScreen, SuccessScreen, SignupScreen, WelcomeScreen, SplashScreen, OnboardingScreen, LoginScreen, HomeScreen, MenuScreen, GoalScreen, ChallengeScreen, AddActivityScreen, UpdateGoalScreen, FriendScreen } from "@screens";
 import { Drawer } from "@components";
 
 interface StackNavigatorParams {
@@ -11,7 +11,8 @@ interface StackNavigatorParams {
   DrawerStack: undefined;
   Signup: undefined;
   Success: Success;
-  [key: string]: undefined | Success;
+  UpdateGoal: { id: string }; // Add the id parameter here
+  [key: string]: undefined | Success | { id: string }; // Add the id parameter here
 }
 
 const Stack = createNativeStackNavigator<StackNavigatorParams>();
@@ -25,6 +26,7 @@ const DrawerStackScreen = () => (
     <DrawerStack.Screen name="Challenge" component={ChallengeScreen} />
     <DrawerStack.Screen name="Goal" component={GoalScreen} />
     <DrawerStack.Screen name="AddActivity" component={AddActivityScreen} />
+    <DrawerStack.Screen name="UpdateGoal" component={UpdateGoalScreen} /> 
   </DrawerStack.Navigator>
   <Drawer />
   </>
@@ -36,12 +38,18 @@ export const AppNavigation = () => {
       <Stack.Navigator initialRouteName="Splash" screenOptions={{headerShown: false}}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Challenge" component={ChallengeScreen} />
+        <Stack.Screen name="Friend" component={FriendScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="DrawerStack" component={DrawerStackScreen} />
         <Stack.Screen name="Signup" component={SignupScreen} />
         <Stack.Screen name="Success" component={SuccessScreen} />
         <Stack.Screen name="AddGoal" component={AddGoalScreen} />
+        <Stack.Screen name="UpdateGoal" component={UpdateGoalScreen} initialParams={{ id: '333' }} /> 
+        <Stack.Screen name="AddChallenge" component={AddChallengeScreen} />
+        <Stack.Screen name="DetailChallenge" component={DetailChallengeScreen} />
+        <Stack.Screen name="Share" component={ShareScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

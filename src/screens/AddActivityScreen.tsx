@@ -2,7 +2,7 @@ import tw from 'twrnc';
 import { Box, Text, Icon, View, Heading, ChevronLeftIcon, FormControl, Select, Input, Button } from "native-base"
 import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { PencilIcon, CalendarDaysIcon } from 'react-native-heroicons/solid';
+import { PencilIcon, CalendarDaysIcon, ViewColumnsIcon, WalletIcon } from 'react-native-heroicons/solid';
 import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { createActivity } from '@services';
 import { getJWT } from '@utils';
@@ -120,7 +120,10 @@ export const AddActivityScreen = () => {
       </Box>
 
       <FormControl padding={5} style={tw`h-full`}>
-        <FormControl.Label><Text fontSize={"2xl"} bold color="blue.700">Cateogry</Text></FormControl.Label>
+        <FormControl.Label style={tw`flex-row items-center gap-2`}>
+          <Text fontSize={"2xl"} bold color="blue.700">Cateogry</Text>
+          <Icon as={<ViewColumnsIcon size={16}/>} mr="3" color="blue.700" />
+        </FormControl.Label>
         <Select 
           shadow={2} 
           selectedValue={category} 
@@ -135,16 +138,21 @@ export const AddActivityScreen = () => {
             <Select.Item key={index} label={item.category} value={item.category} />
           ))}
         </Select>
-        <FormControl.Label><Text fontSize={"2xl"} bold color="blue.700">Contents</Text></FormControl.Label>
-        <Input placeholder='Write your conent' InputRightElement={<Icon as={<PencilIcon size={16}/>} mr="3"/>} value={content} onChangeText = {(value) => setContent(value)}/>
+        <FormControl.Label style={tw`flex-row items-center gap-2`}>
+          <Text fontSize={"2xl"} bold color="blue.700">Contents</Text>
+          <Icon as={<PencilIcon size={16}/>} mr="3" color="blue.700"/>
+        </FormControl.Label>
+        <Input marginBottom={5} placeholder='Write your conent' InputRightElement={<Icon as={<PencilIcon size={16}/>} mr="3"/>} value={content} onChangeText = {(value) => setContent(value)}/>
         <View style={tw`flex-row gap-3`} marginBottom={10}>
           <Box width="50%">
-            <FormControl.Label><Text fontSize={"2xl"} bold color="blue.700">Date</Text></FormControl.Label>
+            <FormControl.Label style={tw`flex-row items-center gap-2`}>
+              <Text fontSize={"2xl"} bold color="blue.700">Date</Text>
+              <Icon as={<CalendarDaysIcon size={16}/>} mr="3" color="blue.700"/>
+            </FormControl.Label>
             <Input 
               value={date.toLocaleDateString()} 
               onPressIn={() => setShow(true)}
               placeholder="Select a date"
-              InputRightElement={<Icon as={<CalendarDaysIcon size={16}/>} mr="3" color="blue.700"  onPress={() => setShow(true)} />}
             />
           {show && (
       <RNDateTimePicker
@@ -158,7 +166,10 @@ export const AddActivityScreen = () => {
     )}
           </Box>
           <Box width="50%">
-            <FormControl.Label><Text fontSize={"2xl"} bold color="blue.700">Amount</Text></FormControl.Label>
+            <FormControl.Label style={tw`flex-row items-center gap-2`}>
+              <Text fontSize={"2xl"} bold color="blue.700">Amount</Text>
+              <Icon as={<WalletIcon size={16}/>} mr="3" color="blue.700"/>
+            </FormControl.Label>
             <Input
               value={amount.toString()}
               onChangeText={(value) => setAmount(Number(value))}
