@@ -1,5 +1,5 @@
 interface User {
-    id: string;
+    _id: string;
     name: string;
     image: string;
     sent: any;

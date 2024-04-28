@@ -14,11 +14,13 @@ import {
 } from "redux-persist";
 import { UserReducers } from "./reducers/user";
 import { activitiesReducer } from "./reducers/activities"
+import { goalsReducer } from "./reducers/goals";
 
 const reducers = combineReducers({
   api: API.reducer,
   user: UserReducers,
-  activity: activitiesReducer
+  activity: activitiesReducer,
+  goal: goalsReducer
 });
 
 const persistConfig = {

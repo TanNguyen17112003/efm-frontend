@@ -218,9 +218,9 @@ const activitiesSlice = createSlice({
     });
     builder.addCase(deleteActivity.fulfilled, (state: any, action: PayloadAction<any>) => {
       state.loading = false;
-      state.activities = state.activities.filter(
-        (activity: Activity) => activity._id !== action.payload._id
-      );
+      // state.activities = state.activities.filter(
+      //   (activity: Activity) => activity._id !== action.payload._id
+      // );
     });
     builder.addCase(deleteActivity.rejected, (state, action) => {
       state.loading = false;
