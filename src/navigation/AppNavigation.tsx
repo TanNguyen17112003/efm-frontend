@@ -2,6 +2,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { AddChallengeScreen, DetailChallengeScreen, ShareScreen, AddGoalScreen, SuccessScreen, SignupScreen, WelcomeScreen, SplashScreen, OnboardingScreen, LoginScreen, HomeScreen, MenuScreen, GoalScreen, ChallengeScreen, AddActivityScreen, UpdateGoalScreen, FriendScreen } from "@screens";
 import { Drawer } from "@components";
+import AboutScreen from "src/screens/AboutScreen";
+import ChangePasswordScreen from "src/screens/ChangePasswordScreen";
 
 interface StackNavigatorParams {
   Splash: undefined;
@@ -35,7 +37,7 @@ const DrawerStackScreen = () => (
 export const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Splash" screenOptions={{headerShown: false}}>
+      <Stack.Navigator initialRouteName="{Splash}" screenOptions={{headerShown: false}}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Challenge" component={ChallengeScreen} />
@@ -50,6 +52,8 @@ export const AppNavigation = () => {
         <Stack.Screen name="AddChallenge" component={AddChallengeScreen} />
         <Stack.Screen name="DetailChallenge" component={DetailChallengeScreen} />
         <Stack.Screen name="Share" component={ShareScreen} />
+        <Stack.Screen name="About" component={AboutScreen} />
+        <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
