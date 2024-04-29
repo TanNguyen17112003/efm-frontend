@@ -19,3 +19,5 @@ export * from './SplashScreen';
 export * from './SuccessScreen';
 export * from './UpdateGoalScreen';
 export * from './WelcomeScreen';
+export * from './AboutScreen';
+export * from './ChangePasswordScreen';
