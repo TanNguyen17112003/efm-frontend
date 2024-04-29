@@ -315,15 +315,5 @@ const userSlice = createSlice({
   }
 });
 
-export const goalsActions = {
-  registerUser,
-  getAllFriends,
-  getAllMyRequests,
-  getAllRequests,
-  getAllUsers,
-  sendFriendRequest,
-  acceptFriendRequest,
-  rejectRequest
-};
 export const { logout } = userSlice.actions;
 export const UserReducers = userSlice.reducer;

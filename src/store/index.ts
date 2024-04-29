@@ -15,12 +15,14 @@ import {
 import { UserReducers } from "./reducers/user";
 import { activitiesReducer } from "./reducers/activities"
 import { goalsReducer } from "./reducers/goals";
+import { challengesReducer } from "./reducers/challenges";
 
 const reducers = combineReducers({
   api: API.reducer,
   user: UserReducers,
   activity: activitiesReducer,
-  goal: goalsReducer
+  goal: goalsReducer,
+  challenge: challengesReducer
 });
 
 const persistConfig = {

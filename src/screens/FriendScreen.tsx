@@ -96,7 +96,6 @@ export const FriendScreen = () => {
     });
 
     const newNotSentList = newList.map((item: any) => {
-        console.log(item)
       if (myRequestList.some((request) => request.to === item.id)) {
         return {
           ...item,

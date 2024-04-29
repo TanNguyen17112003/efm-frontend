@@ -229,12 +229,4 @@ const goalsSlice = createSlice({
   }
 });
 
-export const goalsActions = {
-  getAllgoals,
-  getgoalById,
-  configGoalById,
-  createGoal,
-  deleteGoal
-};
-
 export const goalsReducer = goalsSlice.reducer;
