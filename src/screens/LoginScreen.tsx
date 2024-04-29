@@ -14,8 +14,6 @@ import {
 import ModalConfirm from 'src/components/Modal';
 import { useNavigation } from '@react-navigation/native';
 import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/solid';
-import { login } from '@services';
-import { storeJWT } from '@utils';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { useSigninMutation } from 'src/services/users';
@@ -39,7 +37,6 @@ export const LoginScreen = () => {
   const handleLogin = async () => {
     try {
       await fetchOne({ email: email, password: password });
-      if (!data || !data.token) setModalVisible(true);
     } catch (error) {
       console.error('Error occurred during login:', error);
     }
@@ -57,7 +54,7 @@ export const LoginScreen = () => {
         });
         dispatch(getUser({ token: data.token, email: email }));
         navigation.navigate('DrawerStack');
-      }
+      } else  setModalVisible(true);
     }
   }, [loginError, data]);
 

@@ -2,7 +2,7 @@ import { Config } from 'src/config/api.config';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import axiosInstance from 'src/config/axios.config';
-import { getUserInAsyncStorage } from 'src/helper';
+import { getUserInAsyncStorage, storeAsyncStorage } from 'src/helper';
 import { register } from '@services';
 
 type UserRespone = {
@@ -58,7 +58,12 @@ export const registerUser = createAsyncThunk(
         password,
         name
       });
-      return response.data;
+      storeAsyncStorage('user', {
+        token: response.data.userInfo.token,
+        email: response.data.userInfo.info.email,
+        name: response.data.userInfo.info.name
+      });
+      return response.data.userInfo;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to register');
     }
@@ -171,22 +176,25 @@ export const rejectRequest = createAsyncThunk(
   }
 );
 
-export const getAllRequests = createAsyncThunk('user/allRequests', async (_, { rejectWithValue }) => {
-  try {
-    const user = await getUserInAsyncStorage();
-    if (!user || !user.token) {
-      throw new Error('User token not found');
-    }
-    const response = await axiosInstance.get('/user/request', {
-      headers: {
-        Authorization: `Bearer ${user.token}`
+export const getAllRequests = createAsyncThunk(
+  'user/allRequests',
+  async (_, { rejectWithValue }) => {
+    try {
+      const user = await getUserInAsyncStorage();
+      if (!user || !user.token) {
+        throw new Error('User token not found');
       }
-    });
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to register');
+      const response = await axiosInstance.get('/user/request', {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to register');
+    }
   }
-});
+);
 
 export const getAllFriends = createAsyncThunk('user/allFriends', async (_, { rejectWithValue }) => {
   try {
@@ -206,22 +214,76 @@ export const getAllFriends = createAsyncThunk('user/allFriends', async (_, { rej
   }
 });
 
-export const getAllMyRequests = createAsyncThunk('user/allMyRequest', async (_, { rejectWithValue }) => {
-  try {
-    const user = await getUserInAsyncStorage();
-    if (!user || !user.token) {
-      throw new Error('User token not found');
-    }
-    const response = await axiosInstance.get('user/my-request', {
-      headers: {
-        Authorization: `Bearer ${user.token}`
+export const getAllMyRequests = createAsyncThunk(
+  'user/allMyRequest',
+  async (_, { rejectWithValue }) => {
+    try {
+      const user = await getUserInAsyncStorage();
+      if (!user || !user.token) {
+        throw new Error('User token not found');
       }
-    });
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to register');
+      const response = await axiosInstance.get('user/my-request', {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to register');
+    }
   }
-});
+);
+
+export const updateName = createAsyncThunk(
+  'user/updateName',
+  async ({ name }: { name: string }, { rejectWithValue }) => {
+    try {
+      const user = await getUserInAsyncStorage();
+      if (!user || !user.token) {
+        throw new Error('User token not found');
+      }
+      const response = await axiosInstance.put(
+        'user/update-name',
+        { name },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        }
+      );
+      return response.data.user.name;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to register');
+    }
+  }
+);
+
+export const changePasswords = createAsyncThunk(
+  'user/changePasswords',
+  async (
+    { currentPassword, newPassword }: { currentPassword: string; newPassword: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const user = await getUserInAsyncStorage();
+      if (!user || !user.token) {
+        throw new Error('User token not found');
+      }
+      const response = await axiosInstance.put(
+        'user/update-password',
+        { currentPassword, newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to register');
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: 'user',
@@ -234,7 +296,7 @@ const userSlice = createSlice({
     friends: [],
     requests: [],
     myRequests: [],
-    allUsers: [],
+    allUsers: []
   },
   reducers: {
     logout: (state) => {
@@ -260,58 +322,69 @@ const userSlice = createSlice({
     }),
       builder.addCase(registerUser.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.email = payload.email || '';
-        state.name = payload.name;
-        state.id = payload._id || '';
+        state.email = payload.info.email || '';
+        state.name = payload.info.name;
+        state.id = payload.info._id || '';
       }),
       builder.addCase(registerUser.rejected, (state, { payload }) => {
         state.loading = false;
         state.error = payload as string;
       });
-      builder.addCase(getAllUsers.pending, (state) => {
-        state.loading = true;
-      });
-      builder.addCase(getAllUsers.fulfilled, (state: any, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.allUsers = action.payload;
-      });
-      builder.addCase(getAllUsers.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
-      builder.addCase(getAllRequests.pending, (state) => {
-        state.loading = true;
-      });
-      builder.addCase(getAllRequests.fulfilled, (state: any, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.requests = action.payload;
-      });
-      builder.addCase(getAllRequests.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
-      builder.addCase(getAllMyRequests.pending, (state) => {
-        state.loading = true;
-      });
-      builder.addCase(getAllMyRequests.fulfilled, (state: any, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.myRequests = action.payload;
-      });
-      builder.addCase(getAllMyRequests.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
-      builder.addCase(getAllFriends.pending, (state) => {
-        state.loading = true;
-      });
-      builder.addCase(getAllFriends.fulfilled, (state: any, action: PayloadAction<any>) => {
-        state.loading = false;
-        state.friends = action.payload;
-      });
-      builder.addCase(getAllFriends.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
+    builder.addCase(getAllUsers.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getAllUsers.fulfilled, (state: any, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.allUsers = action.payload;
+    });
+    builder.addCase(getAllUsers.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
+    builder.addCase(getAllRequests.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getAllRequests.fulfilled, (state: any, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.requests = action.payload;
+    });
+    builder.addCase(getAllRequests.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
+    builder.addCase(getAllMyRequests.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getAllMyRequests.fulfilled, (state: any, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.myRequests = action.payload;
+    });
+    builder.addCase(getAllMyRequests.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
+    builder.addCase(getAllFriends.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getAllFriends.fulfilled, (state: any, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.friends = action.payload;
+    });
+    builder.addCase(getAllFriends.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
+    builder.addCase(updateName.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(updateName.fulfilled, (state: any, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.name = action.payload;
+    });
+    builder.addCase(updateName.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
   }
 });
 

@@ -194,9 +194,13 @@ export const createChallenge = createAsyncThunk(
 );
 
 const challengesSlice = createSlice({
-  name: 'challenges',
+  name: 'challenge',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    resetChallenges: (state) => {
+      return { ...state, ...initialState };
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getChallenges.pending, (state) => {
       state.loading = true;
@@ -258,5 +262,6 @@ const challengesSlice = createSlice({
     });
   }
 });
+export const { resetChallenges } = challengesSlice.actions;
 
 export const challengesReducer = challengesSlice.reducer;

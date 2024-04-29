@@ -16,6 +16,7 @@ import { UserReducers } from "./reducers/user";
 import { activitiesReducer } from "./reducers/activities"
 import { goalsReducer } from "./reducers/goals";
 import { challengesReducer } from "./reducers/challenges";
+import { logout } from "./reducers/user";
 
 const reducers = combineReducers({
   api: API.reducer,

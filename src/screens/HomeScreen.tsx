@@ -45,7 +45,7 @@ export const HomeScreen = () => {
     dispatch(getAllActivities());
   }, [dispatch]);
   useEffect(() => {
-    if (activities && activities.length > 0) modifyListActivity(activities);
+    if (activities) modifyListActivity(activities);
   }, [activities]);
 
   const getExactTime = () => {

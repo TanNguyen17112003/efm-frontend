@@ -25,11 +25,10 @@ export const WelcomeScreen = () => {
             <Image source={require('../assets/welcome.png')} alt="Welcome" resizeMode="contain" width='50%' height='50%' />
             <Button style={tw`bg-blue-700`} width='90%' onPress={() => navigation.navigate('Login')}>Sign In</Button>
             <Button style={tw`bg-blue-700`} width='90%' onPress={() => navigation.navigate('Signup')}>Sign Up</Button>
-            <Pressable backgroundColor="white" style={tw`flex-row items-center justify-center gap-3 border p-2 rounded`} width='90%' onPress={()=>promptAsync()} >
+            {/* <Pressable backgroundColor="white" style={tw`flex-row items-center justify-center gap-3 border p-2 rounded`} width='90%' onPress={()=>promptAsync()} >
                 <Image source={require('../assets/google.png')} alt="Google" width={5} height={5} />
                 <Text color="black">Sign in with Google</Text>
-            </Pressable>
-            
+            </Pressable> */}
         </Box>
         </Box>
     </Box>

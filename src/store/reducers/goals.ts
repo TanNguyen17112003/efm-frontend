@@ -162,7 +162,11 @@ export const deleteGoal = createAsyncThunk(
 const goalsSlice = createSlice({
   name: 'goals',
   initialState,
-  reducers: {},
+  reducers: {
+    resetGoals: (state) => {
+      return { ...state, ...initialState };
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getAllgoals.pending, (state) => {
       state.loading = true;
@@ -176,16 +180,16 @@ const goalsSlice = createSlice({
       state.error = action.payload as string;
     });
     builder.addCase(getgoalById.pending, (state) => {
-        state.loading = true;
-      });
-      builder.addCase(getgoalById.fulfilled, (state, action) => {
-        state.loading = false;
-        state.currentGoal = action.payload;
-      });
-      builder.addCase(getgoalById.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
+      state.loading = true;
+    });
+    builder.addCase(getgoalById.fulfilled, (state, action) => {
+      state.loading = false;
+      state.currentGoal = action.payload;
+    });
+    builder.addCase(getgoalById.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
     builder.addCase(configGoalById.pending, (state) => {
       state.loading = true;
     });
@@ -228,5 +232,6 @@ const goalsSlice = createSlice({
     });
   }
 });
+export const { resetGoals } = goalsSlice.actions;
 
 export const goalsReducer = goalsSlice.reducer;
