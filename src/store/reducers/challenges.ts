@@ -20,45 +20,48 @@ const initialState: {
   error: ''
 };
 
-export const getChallenges = createAsyncThunk('challenges/getChallenges', async (_, { rejectWithValue }) => {
-  try {
-    const user = await getUserInAsyncStorage();
-    if (!user || !user.token) {
-      throw new Error('User token not found');
-    }
-    const response = await axiosInstance.get('/challenge', {
-      headers: {
-        Authorization: `Bearer ${user.token}`
+export const getChallenges = createAsyncThunk(
+  'challenge/getChallenges',
+  async (_, { rejectWithValue }) => {
+    try {
+      const user = await getUserInAsyncStorage();
+      if (!user || !user.token) {
+        throw new Error('User token not found');
       }
-    });
-    console.log("Mine",response.data.sample)
-    return response.data.sample;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to fetch challenges');
-  }
-});
-
-
-export const getFriendChallenges = createAsyncThunk('challenges/getFriendChallenges', async (_, { rejectWithValue }) => {
-  try {
-    const user = await getUserInAsyncStorage();
-    if (!user || !user.token) {
-      throw new Error('User token not found');
+      const response = await axiosInstance.get('/challenge/friends/attended', {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      });
+      return response.data; 
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to fetch challenges');
     }
-    const response = await axiosInstance.get('/challenge/friends/all', {
-      headers: {
-        Authorization: `Bearer ${user.token}`
-      }
-    });
-    console.log("Friend",response.data)
-    return response.data.sample;
-  } catch (error: any) {
-    return rejectWithValue(error.message || 'Failed to fetch challenges');
   }
-});
+);
+
+export const getFriendChallenges = createAsyncThunk(
+  'challenge/getFriendChallenges',
+  async (_, { rejectWithValue }) => {
+    try {
+      const user = await getUserInAsyncStorage();
+      if (!user || !user.token) {
+        throw new Error('User token not found');
+      }
+      const response = await axiosInstance.get('/challenge/friends/all', {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to fetch challenges');
+    }
+  }
+);
 
 export const getChallengeById = createAsyncThunk(
-  'challenges/getChallengeById',
+  'challenge/getChallengeById',
   async ({ id }: { id: string }, { rejectWithValue }) => {
     try {
       const user = await getUserInAsyncStorage();
@@ -70,7 +73,7 @@ export const getChallengeById = createAsyncThunk(
           Authorization: `Bearer ${user.token}`
         }
       });
-      return response.data;
+      return response.data.challenge;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to fetch challenge');
     }
@@ -78,7 +81,7 @@ export const getChallengeById = createAsyncThunk(
 );
 
 export const attendChallenge = createAsyncThunk(
-  'challenges/attendChallenge',
+  'challenge/attendChallenge',
   async ({ id }: { id: string }, { rejectWithValue }) => {
     try {
       const user = await getUserInAsyncStorage();
@@ -102,7 +105,7 @@ export const attendChallenge = createAsyncThunk(
 );
 
 export const getContribution = createAsyncThunk(
-  'challenges/getContribution',
+  'challenge/getContribution',
   async ({ id }: { id: string }, { rejectWithValue }) => {
     try {
       const user = await getUserInAsyncStorage();
@@ -114,15 +117,16 @@ export const getContribution = createAsyncThunk(
           Authorization: `Bearer ${user.token}`
         }
       });
-      return response.data;
+    return response.data;
     } catch (error: any) {
+      console.log(error);
       return rejectWithValue(error.message || 'Failed to fetch challenge');
     }
   }
 );
 
 export const contributeToChallenge = createAsyncThunk(
-  'challenges/contributeToChallenge',
+  'challenge/contributeToChallenge',
   async ({ id, amount }: { id: string; amount: number }, { rejectWithValue }) => {
     try {
       const user = await getUserInAsyncStorage();
@@ -146,7 +150,7 @@ export const contributeToChallenge = createAsyncThunk(
 );
 
 export const createChallenge = createAsyncThunk(
-  'challenges/createChallenge',
+  'challenge/createChallenge',
   async (
     {
       category,
@@ -208,7 +212,6 @@ const challengesSlice = createSlice({
     builder.addCase(getChallenges.fulfilled, (state, action) => {
       state.loading = false;
       state.challenges = action.payload;
-
     });
     builder.addCase(getChallenges.rejected, (state, action) => {
       state.loading = false;
@@ -254,7 +257,7 @@ const challengesSlice = createSlice({
     });
     builder.addCase(getContribution.fulfilled, (state: any, action: PayloadAction<any>) => {
       state.loading = false;
-      state.contribution = (action.payload);
+      state.contribution = action.payload != null ? action.payload.amount : 0;
     });
     builder.addCase(getContribution.rejected, (state, action) => {
       state.loading = false;
