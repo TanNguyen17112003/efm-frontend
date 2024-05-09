@@ -40,6 +40,7 @@ export const AppNavigation = () => {
       <Stack.Navigator initialRouteName="{Splash}" screenOptions={{headerShown: false}}>
         <Stack.Screen name="Splash" component={SplashScreen} />
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Challenge" component={ChallengeScreen} />
         <Stack.Screen name="Friend" component={FriendScreen} />
         <Stack.Screen name="Onboarding" component={OnboardingScreen} />

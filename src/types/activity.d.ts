@@ -5,5 +5,5 @@ interface Activity {
     amount: number;
     type: string;
     createdAt: Date;
-    image: any;
+    image?: any;
   }
