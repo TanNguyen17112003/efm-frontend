@@ -61,10 +61,13 @@ export const FriendScreen = () => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const { user } = useAppSelector((state: RootState) => ({ ...state }));
   useEffect(() => {
-    dispatch(getAllUsers());
-    dispatch(getAllFriends());
-    dispatch(getAllMyRequests());
-    dispatch(getAllRequests());
+    const dispatchAll = async () => {
+      await dispatch(getAllUsers());
+      await dispatch(getAllFriends());
+      await dispatch(getAllMyRequests());
+      await dispatch(getAllRequests());
+    }
+    dispatchAll()
   }, [dispatch]);
   useEffect(() => {
     modifyListRequest(user.requests);
