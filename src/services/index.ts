@@ -3,6 +3,8 @@
  */
 
 export * from './activity.service';
+export * from './base';
 export * from './challenge.service';
 export * from './goal.service';
 export * from './user.service';
+export * from './users/index';

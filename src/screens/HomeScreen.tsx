@@ -1,10 +1,5 @@
 import { Text, Box, View, Icon, Image, Button, ScrollView, Circle } from "native-base";
 import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
   StackedBarChart
 } from "react-native-chart-kit";
 import { Dimensions } from "react-native";
@@ -18,63 +13,8 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { getAllActivities } from "src/store/reducers/activities";
 import { RootState } from 'src/store';
+import { useNavigation } from "@react-navigation/native";
 
-// const data: Activity[] = [{
-//   "type": "Income",
-//   "category": "Shopping",
-//   "content": "Buy bicycles",
-//   "createdAt": "2021-09-30T00:00:00.000Z",
-//   "amount": 200000,
-// },
-// {
-//   "type": "Expense",
-//   "category": "Entertainment",
-//   "content": "noooo",
-//   "createdAt": "2024-05-19T11:26:00.000Z",
-//   "amount": 40000,
-// },
-// {
-//   "type": "Expense",
-//   "category": "Food and Drinks",
-//   "content": "Eat hamburger",
-//   "createdAt": "2024-09-14T15:21:00.000Z",
-//   "amount": 160000,
-// },
-// {
-//   "type": "Expense",
-//   "category": "Health and Beauty",
-//   "content": "Go spa",
-//   "createdAt": "2024-04-10T15:22:00.000Z",
-//   "amount": 20000,
-// },
-// {
-//   "type": "Expense",
-//   "category": "Food and Drinks",
-//   "content": "Lunch",
-//   "createdAt": "2024-04-28T04:24:45.785Z",
-//   "amount": 30000,
-// },
-// {
-//   "type": "Income",
-//   "category": "Holiday",
-//   "content": "Come home",
-//   "createdAt": "2024-04-28T04:28:00.806Z",
-//   "amount": 1000000,
-// },
-// {
-//   "type": "Expense",
-//   "category": "Education",
-//   "content": "Learn",
-//   "createdAt": "2024-04-28T04:30:03.016Z",
-//   "amount": 300000,
-// },
-// {
-//   "type": "Income",
-//   "category": "Salary",
-//   "content": "SALARY",
-//   "createdAt": "2024-04-28T04:32:48.761Z",
-//   "amount": 5000000,
-//   }] 
 
 let totalData: number[][] = []
 
@@ -84,7 +24,7 @@ export const HomeScreen = () => {
   const [listActivities, setListActivities] = useState<Activity[]>([]);
   const dispatch = useAppDispatch();
   const { activities, loading, error } = useAppSelector((state: RootState) => state.activity);
-  
+  const navigator = useNavigation();
   const modifyListActivity = (activityList: Activity[]) => {
     const newActivityList =  activityList.map(item => {
       return {
@@ -174,7 +114,7 @@ export const HomeScreen = () => {
             <Text color="white" bold opacity={40}>TOTAL AMOUNT</Text>
             <Text fontSize={'2xl'} color="white" bold>{`${getTotalAmount(listActivities)} VNĐ`}</Text>
           </Box>
-          <Button color="white" backgroundColor="gray.800" bgColor="blue.400">View detail</Button>
+          <Button color="white" backgroundColor="gray.800" bgColor="blue.400" onPress={() => navigator.navigate('DetailChart')}>View detail</Button>
         </View>
       </Box>
 
@@ -187,7 +127,6 @@ export const HomeScreen = () => {
         }}
         hideLegend={true}
         withHorizontalLabels={true}
-
         width={Dimensions.get('window').width + 60}
         height={220}
         chartConfig={{

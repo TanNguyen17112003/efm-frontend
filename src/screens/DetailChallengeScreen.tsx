@@ -11,14 +11,10 @@ import {
   Progress,
   FlatList
 } from 'native-base';
-import { Alert, Modal, Pressable } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { Modal, Pressable } from 'react-native';
+import  { useEffect, useState } from 'react';
+import { StyleSheet,  Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import { CalendarDaysIcon } from 'react-native-heroicons/solid';
-import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { createChallenge } from '@services';
-import { getJWT } from '@utils';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { RootState } from 'src/store';
 import {
@@ -37,99 +33,6 @@ type User = {
   name: string;
   image: string;
 };
-
-// const me: User = {
-//   id: 1,
-//   name: 'Đức Huy',
-//   image: 'https://cdn.pixabay.com/photo/2017/02/23/13/05/avatar-2092113_1280.png'
-// };
-
-// const usersDummy: User[] = [
-//   {
-//     id: 1,
-//     name: 'Đức Huy',
-//     image: 'https://cdn.pixabay.com/photo/2017/02/23/13/05/avatar-2092113_1280.png'
-//   },
-//   {
-//     id: 2,
-//     name: 'Minh Lộc',
-//     image: 'https://cdn.pixabay.com/photo/2017/02/23/13/05/avatar-2092113_1280.png'
-//   },
-//   {
-//     id: 3,
-//     name: 'Duy Tân',
-//     image: 'https://cdn.pixabay.com/photo/2017/02/23/13/05/avatar-2092113_1280.png'
-//   }
-// ];
-
-// const challengeListDummy: Challenge[] = [
-//   {
-//     id: 1,
-//     name: 'Saved Money for Dinner LandMark',
-//     description: 'Week in SaiGon',
-//     current: 2000000,
-//     target: 5200000,
-//     date: new Date(2024, 2, 23),
-//     category: 'Food',
-//     attendants: [1],
-//     createdBy: 1
-//   },
-//   {
-//     id: 2,
-//     name: 'Saved Money for Vung Tau',
-//     description: 'Week in Vung Tau',
-//     current: 2000000,
-//     target: 2200000,
-//     date: new Date(2024, 2, 23),
-//     category: 'Holiday',
-//     attendants: [1, 2],
-//     createdBy: 1
-//   },
-//   {
-//     id: 3,
-//     name: 'Saved Money',
-//     description: 'Saved Money to win',
-//     current: 1800000,
-//     target: 4000000,
-//     date: new Date(2024, 2, 23),
-//     category: 'Salary',
-//     attendants: [2, 3, 1],
-//     createdBy: 2
-//   },
-//   {
-//     id: 4,
-//     name: 'Saved Money for Dinner LandMark',
-//     description: 'Week in SaiGon',
-//     current: 2000000,
-//     target: 5200000,
-//     date: new Date(2024, 2, 23),
-//     category: 'Food',
-//     attendants: [1],
-//     createdBy: 1
-//   },
-//   {
-//     id: 5,
-//     name: 'Saved Money for Vung Tau',
-//     description: 'Week in Vung Tau',
-//     current: 2000000,
-//     target: 2200000,
-//     date: new Date(2024, 2, 23),
-//     category: 'Holiday',
-//     attendants: [1, 2, 3],
-//     createdBy: 1
-//   },
-//   {
-//     id: 6,
-//     name: 'Saved Money',
-//     description: 'Saved Money to win',
-//     current: 1800000,
-//     target: 4000000,
-//     date: new Date(2024, 2, 23),
-//     category: 'Salary',
-//     attendants: [1, 2, 3],
-//     createdBy: 3
-//   }
-// ];
 
 export const DetailChallengeScreen = () => {
   const navigation = useNavigation();

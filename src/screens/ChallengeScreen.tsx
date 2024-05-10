@@ -20,7 +20,12 @@ import { getJWT } from '@utils';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Drawer } from '@components';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
-import { attendChallenge, contributeToChallenge, getChallenges, getFriendChallenges } from 'src/store/reducers/challenges';
+import {
+  attendChallenge,
+  contributeToChallenge,
+  getChallenges,
+  getFriendChallenges
+} from 'src/store/reducers/challenges';
 import { RootState } from 'src/store';
 
 const iconList = {
@@ -62,6 +67,7 @@ const iconList = {
   }
 };
 
+
 export const ChallengeScreen = () => {
   const navigation: any = useNavigation();
   const tabs = ['My Challenges', 'Friend Challenges'];
@@ -71,7 +77,16 @@ export const ChallengeScreen = () => {
   const dispatch = useAppDispatch();
   const { challenge } = useAppSelector((state: RootState) => ({ ...state }));
   const { user } = useAppSelector((state: RootState) => ({ ...state }));
-
+  const category = [
+    'Salary',
+    'Home',
+    'Transport',
+    'Food',
+    'Holiday',
+    'Shopping',
+    'Education',
+    'Other'
+  ];
   useEffect(() => {
     const dispatchAll = async () => {
       await dispatch(getChallenges());
@@ -104,12 +119,12 @@ export const ChallengeScreen = () => {
   }, [tab]);
 
   const handleJoinChallenges = async (id: string) => {
-    await dispatch(attendChallenge({ id })); 
+    await dispatch(attendChallenge({ id }));
     await dispatch(contributeToChallenge({ id: id, amount: 0 }));
     await dispatch(getFriendChallenges());
   };
 
-  function checkJoin(id: string){
+  function checkJoin(id: string) {
     let flag = false;
     challengeList.map((item: Challenge) => {
       if (item._id == id) {
@@ -119,8 +134,13 @@ export const ChallengeScreen = () => {
       }
     });
     return flag;
+  }
+  const checkCategory = (cat: string) => {
+    for (let i in category) {
+      if (i == cat) return true;
+    }
+    return false;
   };
-
   return (
     <Box flex={1}>
       <Box backgroundColor='blue.700' style={tw`px-5 pb-5 pt-10`}>
@@ -193,9 +213,13 @@ export const ChallengeScreen = () => {
                     <View style={tw`flex-row items-center gap-3`}>
                       <Image
                         source={
-                          iconList[
-                            (item.category ? item.category : 'Other') as keyof typeof iconList
-                          ].image
+                          item.category
+                            ? iconList[
+                                (checkCategory(item.category)
+                                  ? item.category
+                                  : 'Other') as keyof typeof iconList
+                              ].image
+                            : require('../assets/icon-other.png')
                         }
                         alt='Category'
                         style={tw`w-10 h-10`}
@@ -207,13 +231,15 @@ export const ChallengeScreen = () => {
                         >{`${formatter.format(new Date(item.date))}, ${new Date(item.date).getFullYear()}`}</Text>
                       </View>
                     </View>
-                    {!checkJoin(item._id) && <Button
-                      w={'30%'}
-                      backgroundColor='blue.400'
-                      onPress={async () => await handleJoinChallenges(item._id)}
-                    >
-                      Join
-                    </Button>}
+                    {!checkJoin(item._id) && (
+                      <Button
+                        w={'30%'}
+                        backgroundColor='blue.400'
+                        onPress={async () => await handleJoinChallenges(item._id)}
+                      >
+                        Join
+                      </Button>
+                    )}
                   </View>
 
                   <View style={tw`flex-row items-center gap-2 mb-3`}>
