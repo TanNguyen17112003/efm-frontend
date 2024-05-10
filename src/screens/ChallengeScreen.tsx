@@ -67,6 +67,7 @@ const iconList = {
   }
 };
 
+
 export const ChallengeScreen = () => {
   const navigation: any = useNavigation();
   const tabs = ['My Challenges', 'Friend Challenges'];
