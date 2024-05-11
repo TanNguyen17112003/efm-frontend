@@ -12,8 +12,8 @@ import {
   FlatList
 } from 'native-base';
 import { Modal, Pressable } from 'react-native';
-import  { useEffect, useState } from 'react';
-import { StyleSheet,  Image } from 'react-native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { RootState } from 'src/store';
@@ -79,10 +79,10 @@ export const DetailChallengeScreen = () => {
 
   const handleContribute = async () => {
     await dispatch(contributeToChallenge({ id: id, amount: myContribution }));
-    await dispatch(getChallengeById({ id: id }));
+    setModalVisible(!modalVisible);
     await dispatch(getContribution({ id: id }));
     await dispatch(getChallenges());
-    setModalVisible(!modalVisible);
+    await dispatch(getChallengeById({ id: id }));
   };
 
   const styles = StyleSheet.create({
@@ -244,7 +244,11 @@ export const DetailChallengeScreen = () => {
         >
           Contribute
         </Button>
-        <Button w={'40%'} backgroundColor='blue.400' onPress={() => navigation.navigate('Share')}>
+        <Button
+          w={'40%'}
+          backgroundColor='blue.400'
+          onPress={() => navigation.navigate('Share', { id: id })}
+        >
           Share
         </Button>
       </Box>
@@ -276,7 +280,7 @@ export const DetailChallengeScreen = () => {
                     <Text bold>{item.name}</Text>
                   </View>
                 </View>
-                <Text bold>{item.contribution/1000000}M VND</Text>
+                <Text bold>{item.contribution / 1000000}M VND</Text>
               </View>
             </Box>
           )}

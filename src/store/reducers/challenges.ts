@@ -149,6 +149,30 @@ export const contributeToChallenge = createAsyncThunk(
   }
 );
 
+export const sendChallengeRequest = createAsyncThunk(
+  'challenge/sendRequest',
+  async ({ id, friendId }: { id: string, friendId: string }, { rejectWithValue }) => {
+    try {
+      const user = await getUserInAsyncStorage();
+      if (!user || !user.token) {
+        throw new Error('User token not found');
+      }
+      const response = await axiosInstance.post(
+        `/challenge/${id}/request`,
+        { id: friendId },
+        {
+          headers: {
+            Authorization: `Bearer ${user.token}`
+          }
+        }
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to fetch challenge');
+    }
+  }
+);
+
 export const createChallenge = createAsyncThunk(
   'challenge/createChallenge',
   async (

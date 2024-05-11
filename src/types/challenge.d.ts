@@ -7,5 +7,6 @@ interface Challenge {
     current: number;
     date: Date;
     attendants: Array<number>;
+    requests: Array<string>;
     createdBy: string;
 }
