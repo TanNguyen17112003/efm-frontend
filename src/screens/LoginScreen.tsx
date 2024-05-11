@@ -9,11 +9,12 @@ import {
   Pressable,
   Image,
   View,
-  ChevronLeftIcon
+  ChevronLeftIcon,
+  Modal
 } from 'native-base';
 import ModalConfirm from 'src/components/Modal';
 import { useNavigation } from '@react-navigation/native';
-import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/solid';
+import { EyeIcon, EyeSlashIcon, InformationCircleIcon } from 'react-native-heroicons/solid';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { useSigninMutation } from 'src/services/users';
@@ -54,17 +55,37 @@ export const LoginScreen = () => {
         });
         dispatch(getUser({ token: data.token, email: email }));
         navigation.navigate('DrawerStack');
-      } else  setModalVisible(true);
+      } else setModalVisible(true);
     }
   }, [loginError, data]);
 
   return (
-    <View backgroundColor='white' position='relative' height='100%'>
-      <ModalConfirm
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-        content={'Invalid email or password!'}
-      />
+    <View backgroundColor='white' position={'relative'} height='100%'>
+      <Modal
+        isOpen={modalVisible}
+        padding={5}
+        backgroundColor={'gray.500'}
+        height={300}
+        width={300}
+        justifyItems={'center'}
+        position={'absolute'}
+        top={'50%'}
+        left={'50%'}
+        transform={[{ translateX: -150 }, { translateY: -150 }]}
+      >
+        <Icon as={InformationCircleIcon} size={30} color={'white'} />
+        <Text fontSize={20} textAlign={'center'} color={'white'}>
+          The email or password entered is invalid. Please try again.
+        </Text>
+        <Button
+          marginTop={5}
+          width={100}
+          backgroundColor={'gray.100'}
+          onPress={() => setModalVisible(false)}
+        >
+          <Text>OK</Text>
+        </Button>
+      </Modal>
       <Pressable
         flexDirection='row'
         display='flex'

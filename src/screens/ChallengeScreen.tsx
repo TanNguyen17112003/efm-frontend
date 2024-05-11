@@ -67,7 +67,6 @@ const iconList = {
   }
 };
 
-
 export const ChallengeScreen = () => {
   const navigation: any = useNavigation();
   const tabs = ['My Challenges', 'Friend Challenges'];
@@ -196,66 +195,73 @@ export const ChallengeScreen = () => {
             style={tw`p-3`}
             data={challengeList}
             keyExtractor={(item: any, index) => index.toString()}
-            renderItem={({ item }: { item: Challenge }) => (
-              <Pressable
-                onPress={() => {
-                  tab === 'My Challenges' ? handleViewDetail(item._id) : {};
-                }}
-              >
-                <Box
-                  style={tw`p-5 mb-5`}
-                  backgroundColor='white'
-                  borderWidth='1'
-                  borderColor='coolGray.300'
-                  rounded={8}
+            renderItem={({ item }: { item: Challenge }) =>
+              ((checkJoin(item._id) && tab === 'My Challenges') ||
+                (!checkJoin(item._id) && tab != 'My Challenges')) && (
+                <Pressable
+                  onPress={() => {
+                    tab === 'My Challenges' ? handleViewDetail(item._id) : {};
+                  }}
                 >
-                  <View style={tw`flex-row items-center justify-between mb-3`}>
-                    <View style={tw`flex-row items-center gap-3`}>
-                      <Image
-                        source={
-                          item.category
-                            ? iconList[
-                                (checkCategory(item.category)
-                                  ? item.category
-                                  : 'Other') as keyof typeof iconList
-                              ].image
-                            : require('../assets/icon-other.png')
-                        }
-                        alt='Category'
-                        style={tw`w-10 h-10`}
-                      />
-                      <View>
-                        <Text bold>{item.name}</Text>
-                        <Text
-                          opacity={50}
-                        >{`${formatter.format(new Date(item.date))}, ${new Date(item.date).getFullYear()}`}</Text>
+                  <Box
+                    style={tw`p-5 mb-5`}
+                    backgroundColor='white'
+                    borderWidth='1'
+                    borderColor='coolGray.300'
+                    rounded={8}
+                  >
+                    <View style={tw`flex-row items-center justify-between mb-3`}>
+                      <View style={tw`flex-row items-center gap-3`}>
+                        <Image
+                          source={
+                            item.category
+                              ? iconList[
+                                  (checkCategory(item.category)
+                                    ? item.category
+                                    : 'Other') as keyof typeof iconList
+                                ].image
+                              : require('../assets/icon-other.png')
+                          }
+                          alt='Category'
+                          style={tw`w-10 h-10`}
+                        />
+                        <View>
+                          <Text bold>{item.name}</Text>
+                          <Text
+                            opacity={50}
+                          >{`${formatter.format(new Date(item.date))}, ${new Date(item.date).getFullYear()}`}</Text>
+                        </View>
                       </View>
+                      {!checkJoin(item._id) ? (
+                        <Button
+                          w={'30%'}
+                          backgroundColor='blue.400'
+                          onPress={async () => await handleJoinChallenges(item._id)}
+                        >
+                          Join
+                        </Button>
+                      ) : (
+                        <Button w={'30%'} backgroundColor='gray.400'>
+                          Joined
+                        </Button>
+                      )}
                     </View>
-                    {!checkJoin(item._id) && (
-                      <Button
-                        w={'30%'}
-                        backgroundColor='blue.400'
-                        onPress={async () => await handleJoinChallenges(item._id)}
-                      >
-                        Join
-                      </Button>
-                    )}
-                  </View>
 
-                  <View style={tw`flex-row items-center gap-2 mb-3`}>
-                    <Text bold fontSize='2xl'>{`${item.current / 1000000}M VNĐ`}</Text>
-                    <Text>{`saved of ${item.target / 1000000}M VNĐ`}</Text>
-                  </View>
-                  <Progress
-                    w='300'
-                    shadow={2}
-                    value={(item.current / item.target) * 100}
-                    style={tw`mb-3`}
-                  />
-                  <Text bold>{item.description}</Text>
-                </Box>
-              </Pressable>
-            )}
+                    <View style={tw`flex-row items-center gap-2 mb-3`}>
+                      <Text bold fontSize='2xl'>{`${item.current / 1000000}M VNĐ`}</Text>
+                      <Text>{`saved of ${item.target / 1000000}M VNĐ`}</Text>
+                    </View>
+                    <Progress
+                      w='300'
+                      shadow={2}
+                      value={(item.current / item.target) * 100}
+                      style={tw`mb-3`}
+                    />
+                    <Text bold>{item.description}</Text>
+                  </Box>
+                </Pressable>
+              )
+            }
           />
         </SafeAreaView>
       )}

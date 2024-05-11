@@ -43,19 +43,11 @@ export const MenuScreen = () => {
       icon: <ChevronRightIcon />
     },
     {
-      name: 'Notification',
-      icon: <Switch />
-    },
-    {
       name: 'About',
       icon: <ChevronRightIcon />
     },
     {
       name: 'Change Passwords',
-      icon: <ChevronRightIcon />
-    },
-    {
-      name: 'Help',
       icon: <ChevronRightIcon />
     },
     {
@@ -83,9 +75,9 @@ export const MenuScreen = () => {
 
   const handleLogout = async () => {
 
-    dispatch(resetActivities());
     dispatch(resetChallenges());
     dispatch(resetGoals());
+    dispatch(resetActivities());
     dispatch(logout());
     await AsyncStorage.clear();
     setIsShowLogoutDialog(false);

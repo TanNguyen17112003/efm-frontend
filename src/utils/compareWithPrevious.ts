@@ -23,7 +23,7 @@ export const generateComment = (previous: number, current: number) => {
         return 'Previous data does not exist'
     }
     // get diff of % unit between two months
-    const diff = ((current - previous) / previous) * 100;
+    const diff = Math.round(((current - previous) / previous) * 100);
     if (diff > 0) {
         return ` ${diff}% from the previous month`;
     } else if (diff < 0) {
