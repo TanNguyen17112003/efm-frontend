@@ -11,7 +11,7 @@ import {
   Progress,
   FlatList
 } from 'native-base';
-import { Modal, Pressable } from 'react-native';
+import { Modal, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
 import { StyleSheet, Image } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -23,6 +23,7 @@ import {
   getContribution,
   getChallenges
 } from 'src/store/reducers/challenges';
+import { Loading } from 'src/components/Loading';
 
 type Param = {
   id: string;
@@ -52,6 +53,7 @@ export const DetailChallengeScreen = () => {
   });
   const [description, setDescription] = useState<string>(currentChallenge.description);
   const [show, setShow] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [contribution, setContribution] = useState<number>(0);
   const [myContribution, setMyContribution] = useState<number>(0);
   const [userList, setUserList] = useState<any>([]);
@@ -78,11 +80,13 @@ export const DetailChallengeScreen = () => {
   }, [challenge]);
 
   const handleContribute = async () => {
+    setLoading(true)
     await dispatch(contributeToChallenge({ id: id, amount: myContribution }));
-    setModalVisible(!modalVisible);
     await dispatch(getContribution({ id: id }));
     await dispatch(getChallenges());
     await dispatch(getChallengeById({ id: id }));
+    setLoading(false)
+    setModalVisible((prev) => {return !prev});
   };
 
   const styles = StyleSheet.create({
@@ -157,6 +161,7 @@ export const DetailChallengeScreen = () => {
 
   return (
     <Box backgroundColor={'gray.100'} h={'100%'}>
+      {loading && <Loading/>}
       <Modal animationType='slide' transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -177,7 +182,10 @@ export const DetailChallengeScreen = () => {
                 style={[styles.button, styles.buttonClose, { width: '40%' }]}
                 onPress={handleContribute}
               >
-                <Text style={styles.textStyle}>Contribute</Text>
+                <Text style={styles.textStyle}>
+                  Contribute 
+                </Text>
+                  {loading && <ActivityIndicator/>}
               </Pressable>
             </Box>
           </View>

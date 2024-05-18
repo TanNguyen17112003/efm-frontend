@@ -10,12 +10,14 @@ import {
   Image,
   View,
   ChevronLeftIcon,
-  Modal
+  Modal,
+  AlertDialog,
+  CheckIcon
 } from 'native-base';
 import ModalConfirm from 'src/components/Modal';
 import { useNavigation } from '@react-navigation/native';
 import { EyeIcon, EyeSlashIcon, InformationCircleIcon } from 'react-native-heroicons/solid';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { useSigninMutation } from 'src/services/users';
 import { getUser } from 'src/store/reducers/user';
@@ -26,6 +28,8 @@ import tw from 'twrnc';
 export const LoginScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const cancelRef = useRef(null);
+  const [showDialog, setShowDialog] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState(false);
   const { user } = useAppSelector((state: RootState) => ({ ...state }));
   const [inputError, setInputError] = useState<string>('');
@@ -34,6 +38,11 @@ export const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [fetchOne, { data, isLoading, error: loginError }] = useSigninMutation();
+  const [isShowLogoutDialog, setIsShowLogoutDialog] = useState<boolean>(false);
+
+  const onClose = () => {
+    setIsShowLogoutDialog(false);
+  };
 
   const handleLogin = async () => {
     try {
@@ -45,7 +54,7 @@ export const LoginScreen = () => {
 
   useEffect(() => {
     if (loginError) {
-      if (!data) setModalVisible(true);
+      if (!data) setIsShowLogoutDialog(true);
     } else if (data) {
       if (data.token) {
         storeAsyncStorage('user', {
@@ -55,13 +64,13 @@ export const LoginScreen = () => {
         });
         dispatch(getUser({ token: data.token, email: email }));
         navigation.navigate('DrawerStack');
-      } else setModalVisible(true);
+      } else setIsShowLogoutDialog(true);
     }
   }, [loginError, data]);
 
   return (
     <View backgroundColor='white' position={'relative'} height='100%'>
-      <Modal
+      {/* <Modal
         isOpen={modalVisible}
         padding={5}
         backgroundColor={'gray.500'}
@@ -85,7 +94,43 @@ export const LoginScreen = () => {
         >
           <Text>OK</Text>
         </Button>
-      </Modal>
+      </Modal> */}
+      <AlertDialog leastDestructiveRef={cancelRef} isOpen={isShowLogoutDialog} onClose={onClose}>
+        <AlertDialog.Content>
+          <AlertDialog.Body padding={-2}>
+            <Box
+              backgroundColor={'green.300'}
+              height={100}
+              display={'flex'}
+              justifyContent={'center'}
+              alignItems={'center'}
+            >
+              <View
+                style={{
+                  padding: 10,
+                  borderRadius: 36,
+                  borderWidth: 2,
+                  borderColor: 'white',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Icon as={<CheckIcon />} size={36} color='white' />
+              </View>
+            </Box>
+            <Box marginTop={5}>
+              <Text textAlign={'center'} bold>
+                The email or password entered is invalid. Please try again!
+              </Text>
+              <Button.Group display={'flex'} justifyContent={'center'} marginY={5}>
+                <Button variant='unstyled' colorScheme='gray' onPress={onClose} ref={cancelRef}>
+                  Re-enter
+                </Button>
+              </Button.Group>
+            </Box>
+          </AlertDialog.Body>
+        </AlertDialog.Content>
+      </AlertDialog>
       <Pressable
         flexDirection='row'
         display='flex'

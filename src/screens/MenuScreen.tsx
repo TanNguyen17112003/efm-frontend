@@ -7,7 +7,7 @@ import {
   ChevronRightIcon,
   AlertDialog,
   Button,
-  Icon
+  Icon,
 } from 'native-base';
 import { CheckIcon } from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
@@ -118,7 +118,7 @@ export const MenuScreen = () => {
       />
       <AlertDialog leastDestructiveRef={cancelRef} isOpen={isShowLogoutDialog} onClose={onClose}>
         <AlertDialog.Content>
-          <AlertDialog.Body padding={-2}>
+          <AlertDialog.Body padding={-2}> 
             <Box
               backgroundColor={'green.300'}
               height={100}
