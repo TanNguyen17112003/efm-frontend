@@ -161,7 +161,7 @@ export const DetailChallengeScreen = () => {
 
   return (
     <Box backgroundColor={'gray.100'} h={'100%'}>
-      {loading && <Loading/>}
+      {/* {loading && <Loading/>} */}
       <Modal animationType='slide' transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
