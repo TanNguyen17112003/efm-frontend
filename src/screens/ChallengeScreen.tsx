@@ -103,7 +103,6 @@ export const ChallengeScreen = () => {
   useFocusEffect(
     useCallback( () => {
       const dispatchAll = async () => {
-        console.log('fetchingS')
         await dispatch(getChallenges());
         await dispatch(getFriendChallenges());
       };
