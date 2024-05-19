@@ -23,6 +23,7 @@ import { mapCategory } from '@utils';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { getgoalById, configGoalById, deleteGoal, getAllgoals } from 'src/store/reducers/goals';
+import { Loading } from 'src/components/Loading';
 
 export const UpdateGoalScreen = () => {
   const dispatch = useAppDispatch();
@@ -37,6 +38,8 @@ export const UpdateGoalScreen = () => {
   const [target, setTarget] = useState<number>(0);
   const [modifiedDate, setModifiedDate] = useState<Date>(new Date());
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   // THis will put image to goal from category
   const modifyGoal = (input: Goal) => {
     const newGoal = { ...input };
@@ -44,7 +47,11 @@ export const UpdateGoalScreen = () => {
     setGoal(newGoal);
   };
 
-  const { currentGoal, loading, error } = useAppSelector((state: RootState) => state.goal);
+  const {
+    currentGoal,
+    loading: isLoading,
+    error
+  } = useAppSelector((state: RootState) => state.goal);
   useEffect(() => {
     dispatch(getgoalById({ id: goalInfo?.id }));
   }, [dispatch]);
@@ -54,13 +61,18 @@ export const UpdateGoalScreen = () => {
   // Actions related to current goal
   // Update goal
   const handleConfig = async () => {
+    setLoading(true);
     await dispatch(configGoalById({ id: goalInfo?.id, date: modifiedDate, target, current }));
+    await dispatch(getAllgoals());
+    setLoading(false);
     navigation.navigate('Goal');
   };
   // Delete goal
   const handleDelete = async () => {
-    await dispatch(deleteGoal({ id: goalInfo?.id }));
-    await dispatch(getAllgoals());
+    console.log(goalInfo?.id);
+    setLoading(true);
+    await dispatch(deleteGoal({ id: goalInfo?.id })).then((res: any) => console.log(res));
+    setLoading(false);
     navigation.navigate('Goal');
   };
   const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
@@ -68,9 +80,11 @@ export const UpdateGoalScreen = () => {
     setModifiedDate(currentDate);
     setShow(false);
   };
-  if (!goal) return <ActivityIndicator size="large" />;
+  if (!goal) return <ActivityIndicator size='large' />;
   return (
     <Box backgroundColor={'white'}>
+      {loading && <Loading />}
+
       <Box backgroundColor='blue.700' paddingTop={70} position='relative' borderBottomRadius={0}>
         <Box>
           <ChevronLeftIcon
@@ -204,7 +218,7 @@ export const UpdateGoalScreen = () => {
                 Cancel
               </Button>
               <Button colorScheme='danger' onPress={handleDelete}>
-                Delete
+                {loading ? <ActivityIndicator size='small' color='white' /> : 'Delete'}
               </Button>
             </Button.Group>
           </AlertDialog.Footer>

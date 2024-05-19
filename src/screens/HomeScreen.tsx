@@ -80,9 +80,7 @@ export const HomeScreen = () => {
       setTotalData(totals.map((total) => [total.income, total.expense]));
     }
   }, [activities]);
-  // useEffect(() => {
-  //   modifyListActivity(data);
-  // }, [])
+
 
   useFocusEffect(
     React.useCallback(() => {
@@ -106,14 +104,6 @@ export const HomeScreen = () => {
       return () => {}; // optional cleanup function
     }, [listActivities])
   );
-  // useFocusEffect(
-  //   React.useCallback(() => {
-  //     const totals = calculateMonthlyTotals(listActivities);
-  //     setMonthlyTotals(totals);
-  //     console.log(monthlyTotals);
-  //     return () => {}
-  //   }, [listActivities])
-  // );
 
   const getExactTime = () => {
     var today = new Date();

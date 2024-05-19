@@ -22,10 +22,12 @@ import {
 import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { createActivity } from 'src/store/reducers/activities';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
+import { Loading } from 'src/components/Loading';
 
 export const AddActivityScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const [loading, setLoading] = useState<boolean>(false);
   const [activity, setActivity] = useState<string>('Expense');
   const [token, setToken] = useState<string>('');
   const [category, setCategory] = useState<string>('');
@@ -41,7 +43,9 @@ export const AddActivityScreen = () => {
     setShow(false);
   };
   const handleAddActivity = async () => {
+    setLoading(true)
     await dispatch(createActivity({type: activity, category, content, createdAt: date, amount}));
+    setLoading(false)
     navigation.navigate('Home');
   };
   
@@ -111,6 +115,7 @@ export const AddActivityScreen = () => {
   ];
   return (
     <Box backgroundColor={'white'}>
+    {loading && <Loading/>}
       <Box backgroundColor='blue.700' paddingTop={10} position='relative' borderBottomRadius={50}>
         <Box>
           <ChevronLeftIcon

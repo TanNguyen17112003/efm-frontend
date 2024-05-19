@@ -26,7 +26,7 @@ import {
   CheckIcon,
   PlusIcon
 } from 'react-native-heroicons/solid';
-import { TouchableOpacity } from 'react-native';
+import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'twrnc';
 // import { getAllMyRequests, getAllUsers, getInformation, getAllRequests, getAllFriends, acceptFriendRequest, sendFriendRequest, rejectRequest } from "@services";
@@ -43,6 +43,7 @@ import {
   rejectRequest,
   sendFriendRequest
 } from 'src/store/reducers/user';
+import { Loading } from 'src/components/Loading';
 
 export const FriendScreen = () => {
   const dispatch = useAppDispatch();
@@ -60,14 +61,16 @@ export const FriendScreen = () => {
   const [originalRequestList, setOriginalRequestList] = useState<Request[]>([]);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const { user } = useAppSelector((state: RootState) => ({ ...state }));
+  const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
     const dispatchAll = async () => {
       await dispatch(getAllUsers());
       await dispatch(getAllFriends());
       await dispatch(getAllMyRequests());
       await dispatch(getAllRequests());
-    }
-    dispatchAll()
+    };
+    dispatchAll();
   }, [dispatch]);
   useEffect(() => {
     modifyListRequest(user.requests);
@@ -79,9 +82,7 @@ export const FriendScreen = () => {
     friendList: Friend[],
     myRequestList: Request[]
   ) => {
-
     const suggestionExceptFriendList = list.filter((userItem: any) => {
-
       return !friendList.some((friendItem) => friendItem._id === userItem.id);
     });
 
@@ -152,21 +153,25 @@ export const FriendScreen = () => {
   };
   const handleAcceptInvitaion = async (id: string) => {
     try {
+      setLoading(true);
       const response = await dispatch(acceptFriendRequest({ id }));
       await dispatch(getAllRequests());
       setIsShowAcceptDialog(true);
       setTimeout(() => {
         setIsShowAcceptDialog(false);
       }, 2000);
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
   };
   const handleSendInvitation = async (id: string) => {
     try {
+      setLoading(true);
       await dispatch(sendFriendRequest({ id }));
       setSentInvitations((prev) => [...prev, id]);
       await dispatch(getAllMyRequests());
+      setLoading(false);
     } catch (e) {
       throw e;
     }
@@ -177,10 +182,12 @@ export const FriendScreen = () => {
   };
   const handleDenyInvitationConfirm = async () => {
     try {
+      setLoading(true);
       if (denyId) {
         await dispatch(rejectRequest({ id: denyId }));
         await dispatch(getAllRequests());
       }
+      setLoading(false);
       setDenyId(null);
       setIsShowDenyDialog(false);
     } catch (e) {
@@ -201,6 +208,7 @@ export const FriendScreen = () => {
   }, [tab]);
   return (
     <Box flex={1}>
+      {loading && <Loading />}
       <Box
         backgroundColor='blue.700'
         style={tw`px-5 pt-10`}
@@ -360,7 +368,7 @@ export const FriendScreen = () => {
             <Button.Group display={'flex'} alignItems={'center'} justifyContent={'center'}>
               <Button onPress={() => setIsShowDenyDialog(false)}>Cancel</Button>
               <Button colorScheme='red' onPress={handleDenyInvitationConfirm} ml={3}>
-                Deny
+                {loading ? <ActivityIndicator size='small' color='white' /> : 'Deny'}
               </Button>
             </Button.Group>
           </AlertDialog.Body>

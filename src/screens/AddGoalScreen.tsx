@@ -25,7 +25,8 @@ import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/d
 import { getJWT } from '@utils';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useAppDispatch } from 'src/hooks/redux';
-import { createGoal } from 'src/store/reducers/goals';
+import { createGoal, getAllgoals } from 'src/store/reducers/goals';
+import { Loading } from 'src/components/Loading';
 export const AddGoalScreen = () => {
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
@@ -35,9 +36,13 @@ export const AddGoalScreen = () => {
   const [saved, setSaved] = useState<number>(0);
   const [show, setShow] = useState<boolean>(false);
   const [category, setCategory] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleAddGoal = async () => {
+    setLoading(true);
     await dispatch(createGoal({ category, title, date, target, current: saved }));
+    await dispatch(getAllgoals());
+    setLoading(false)
     navigation.navigate('Goal');
   };
   const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
@@ -105,6 +110,8 @@ export const AddGoalScreen = () => {
   ];
   return (
     <Box backgroundColor={'white'}>
+      {loading && <Loading />}
+
       <Box
         backgroundColor='blue.700'
         paddingX={5}

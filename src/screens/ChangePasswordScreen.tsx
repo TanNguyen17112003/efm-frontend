@@ -20,6 +20,7 @@ import { getJWT } from '@utils';
 import { useAppDispatch, useAppSelector } from 'src/hooks/redux';
 import { RootState } from 'src/store';
 import { changePasswords } from 'src/store/reducers/user';
+import { Loading } from 'src/components/Loading';
 
 const me = {
   id: 1,
@@ -43,12 +44,12 @@ export default function ChangePasswordScreen() {
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error>({
     current: '',
     new: '',
     confirm: ''
   });
-  const { user } = useAppSelector((state: RootState) => ({ ...state }));
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -61,6 +62,7 @@ export default function ChangePasswordScreen() {
 
   const handleSubmit = async () => {
     // Some validations
+    setLoading(true);
     if (newPassword !== confirmPassword) {
       setError({
         ...error,
@@ -78,13 +80,15 @@ export default function ChangePasswordScreen() {
     }
 
     setIsSubmit(false);
-    dispatch(changePasswords({ currentPassword, newPassword }))
+    await dispatch(changePasswords({ currentPassword, newPassword }))
       .unwrap()
       .then((result) => {
+        setLoading(false);
         navigation.goBack();
       })
       .catch((error) => {
-        console.log(error)
+        setLoading(false);
+        console.log(error);
         setError({
           ...error,
           current: 'Incorrect passwords!'
@@ -94,6 +98,7 @@ export default function ChangePasswordScreen() {
 
   return (
     <Box backgroundColor={'white'} h={'100%'}>
+      {loading && <Loading />}
       <Box
         backgroundColor='blue.700'
         px={5}

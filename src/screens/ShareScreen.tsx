@@ -35,6 +35,7 @@ import {
   getChallenges,
   sendChallengeRequest
 } from 'src/store/reducers/challenges';
+import { Loading } from 'src/components/Loading';
 
 type User = {
   id: number;
@@ -58,12 +59,15 @@ export const ShareScreen = () => {
   const navigation = useNavigation();
   const { user } = useAppSelector((state: RootState) => ({ ...state }));
   const { challenge } = useAppSelector((state: RootState) => ({ ...state }));
-
+  const [loading, setLoading] = useState<boolean>(false);
   const [friends, setFriends] = useState<any>([]);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getAllFriends());
-    dispatch(getChallengeById({ id }));
+    const fetchAll = async () => {
+      await dispatch(getAllFriends());
+      await dispatch(getChallengeById({ id }));
+    }
+    fetchAll()
   }, [dispatch]);
   useEffect(() => {
     if (user.friends.length > 0) {
@@ -84,8 +88,10 @@ export const ShareScreen = () => {
   }, [challenge]);
 
   const handleSendRequest = async (friendId: string) => {
+    setLoading(true)
     await dispatch(sendChallengeRequest({ id: id, friendId: friendId }));
     await dispatch(getChallengeById({ id }));
+    setLoading(false)
   };
 
   const styles = StyleSheet.create({
@@ -119,6 +125,8 @@ export const ShareScreen = () => {
 
   return (
     <Box backgroundColor={'gray.100'} h={'100%'}>
+      {loading && <Loading />}
+
       <Box
         backgroundColor='blue.700'
         px={5}

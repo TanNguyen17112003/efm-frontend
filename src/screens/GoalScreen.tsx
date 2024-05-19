@@ -35,29 +35,24 @@ export const GoalScreen = () => {
     setGoalList(newGoalList);
   };
   const dispatch = useAppDispatch();
-  const { goals, loading, error } = useAppSelector((state: RootState) => state.goal);
+  const { goal } = useAppSelector((state: RootState) => ({ ...state }));
+  // useEffect(() => {
+  //   dispatch(getAllgoals());
+  // }, [dispatch]);
+
   useEffect(() => {
-    dispatch(getAllgoals());
-  }, [dispatch]);
-  useEffect(() => {
-    if (goals && goals.length > 0) modifyGoalList(goals);
-  }, [goals]);
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     const fetchGoalList = async () => {
-  //       try {
-  //         const data = await getJWT();
-  //         if (data) {
-  //           const result = await getAllGoals(data.token);
-  //           modifyGoalList(result);
-  //         }
-  //       } catch (e) {
-  //         throw e;
-  //       }
-  //     };
-  //     fetchGoalList();
-  //   }, [goalList])
-  // );
+    if (goal) modifyGoalList(goal.goals);
+  }, [goal]);
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getAllgoals());
+      modifyGoalList(goal.goals);
+      return () => {
+        dispatch(getAllgoals());
+      };
+    }, [])
+  );
 
   const formatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit' });
   const getDiffDate = (date: Date) => {
@@ -66,7 +61,7 @@ export const GoalScreen = () => {
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     return days;
   };
-  if (!goals) return <ActivityIndicator size="large" />;
+  if (!goal) return <ActivityIndicator size='large' />;
   return (
     <Box flex={1}>
       <Box backgroundColor='blue.700' style={tw`p-5`}>
@@ -84,7 +79,7 @@ export const GoalScreen = () => {
           <Text bold>Add your goals</Text>
         </Box>
       </Box>
-      <ScrollView>
+      <ScrollView h={100}>
         {goalList.length == 0 && (
           <Box style={tw`flex-row items-center justify-center h-100`}>
             <Text fontSize={28} color={'red.700'} bold>

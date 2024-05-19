@@ -27,6 +27,8 @@ import {
   getFriendChallenges
 } from 'src/store/reducers/challenges';
 import { RootState } from 'src/store';
+import { Loading } from 'src/components/Loading';
+import { useIsFocused } from '@react-navigation/native';
 
 const iconList = {
   Salary: {
@@ -68,11 +70,14 @@ const iconList = {
 };
 
 export const ChallengeScreen = () => {
+  const isFocused = useIsFocused();
   const navigation: any = useNavigation();
   const tabs = ['My Challenges', 'Friend Challenges'];
   const [tab, setTab] = useState<string>('My Challenges');
   const formatter = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit' });
   const [challengeList, setChallengeList] = useState<Challenge[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
   const { challenge } = useAppSelector((state: RootState) => ({ ...state }));
   const { user } = useAppSelector((state: RootState) => ({ ...state }));
@@ -86,6 +91,7 @@ export const ChallengeScreen = () => {
     'Education',
     'Other'
   ];
+
   useEffect(() => {
     const dispatchAll = async () => {
       await dispatch(getChallenges());
@@ -93,6 +99,21 @@ export const ChallengeScreen = () => {
     };
     dispatchAll();
   }, []);
+
+  useFocusEffect(
+    useCallback( () => {
+      const dispatchAll = async () => {
+        console.log('fetchingS')
+        await dispatch(getChallenges());
+        await dispatch(getFriendChallenges());
+      };
+      dispatchAll();
+      return () => {
+        dispatchAll();
+      };
+    }, [])
+  );
+
 
   useEffect(() => {
     if (challenge.challenges) {
@@ -102,7 +123,7 @@ export const ChallengeScreen = () => {
         setChallengeList(challenge.friendChallenges);
       }
     }
-  }, [challenge, tab]);
+  }, [challenge.challenges, tab]);
 
   const handleViewDetail = (challengeId: string) => {
     navigation.navigate('DetailChallenge', { id: challengeId });
@@ -118,9 +139,12 @@ export const ChallengeScreen = () => {
   }, [tab]);
 
   const handleJoinChallenges = async (id: string) => {
+    setLoading(true);
     await dispatch(attendChallenge({ id }));
     await dispatch(contributeToChallenge({ id: id, amount: 0 }));
     await dispatch(getFriendChallenges());
+    await dispatch(getChallenges());
+    setLoading(false);
   };
 
   function checkJoin(id: string) {
@@ -142,6 +166,7 @@ export const ChallengeScreen = () => {
   };
   return (
     <Box flex={1}>
+      {loading && <Loading />}
       <Box backgroundColor='blue.700' style={tw`px-5 pb-5 pt-10`}>
         <Text bold fontSize='2xl' color='white' style={tw`mb-4`}>
           Challenge with Friends

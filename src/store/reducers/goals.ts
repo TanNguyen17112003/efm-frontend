@@ -173,7 +173,7 @@ const goalsSlice = createSlice({
     });
     builder.addCase(getAllgoals.fulfilled, (state, action) => {
       state.loading = false;
-      state.goals = action.payload;
+      state.goals = action.payload ? action.payload : [];
     });
     builder.addCase(getAllgoals.rejected, (state, action) => {
       state.loading = false;
@@ -224,7 +224,9 @@ const goalsSlice = createSlice({
     });
     builder.addCase(deleteGoal.fulfilled, (state: any, action: PayloadAction<any>) => {
       state.loading = false;
-      // state.goals = state.goals.filter((goal: Goal) => goal._id !== action.payload._id);
+      if (state.goals.length == 1) {
+        state.goals = [];
+      }
     });
     builder.addCase(deleteGoal.rejected, (state, action) => {
       state.loading = false;

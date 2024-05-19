@@ -21,8 +21,10 @@ import RNDateTimePicker, { DateTimePickerEvent } from '@react-native-community/d
 import { getJWT } from '@utils';
 import { useAppDispatch } from 'src/hooks/redux';
 import { createChallenge, getChallenges } from 'src/store/reducers/challenges';
+import { Loading } from 'src/components/Loading';
 
 export const AddChallengeScreen = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const navigation = useNavigation();
   const [token, setToken] = useState<string>('');
   const [category, setCategory] = useState<string>('');
@@ -33,15 +35,6 @@ export const AddChallengeScreen = () => {
   const [show, setShow] = useState<boolean>(false);
   const dispatch = useAppDispatch();
 
-  // useEffect(() => {
-  //   const getToken = async () => {
-  //     const data = await getJWT();
-  //     if (data) {
-  //       setToken(data.token);
-  //     }
-  //   }
-  //   getToken();
-  // },[])
 
   const onChange = (event: DateTimePickerEvent, selectedDate: Date | undefined) => {
     const currentDate = selectedDate || date;
@@ -50,6 +43,7 @@ export const AddChallengeScreen = () => {
   };
 
   const handleAddChallenge = async () => {
+    setLoading(true);
     await dispatch(
       createChallenge({
         category,
@@ -61,6 +55,7 @@ export const AddChallengeScreen = () => {
       })
     );
     await dispatch(getChallenges());
+    setLoading(false);
     navigation.navigate('Challenge');
   };
 
@@ -132,6 +127,8 @@ export const AddChallengeScreen = () => {
 
   return (
     <Box backgroundColor={'white'} h={'100%'}>
+      {loading && <Loading />}
+
       <Box
         backgroundColor='blue.700'
         px={5}
