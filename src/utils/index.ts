@@ -4,4 +4,7 @@
 
 export * from './category';
 export * from './checkValidSignUp';
+export * from './compareWithPrevious';
+export * from './getMonthAmount';
+export * from './getRandomColor';
 export * from './JWT';

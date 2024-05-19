@@ -1,5 +1,5 @@
 interface Challenge {
-    id: number;
+    _id: string;
     category: string;
     name: string;
     description: string;
@@ -7,5 +7,6 @@ interface Challenge {
     current: number;
     date: Date;
     attendants: Array<number>;
-    createdBy:number;
+    requests: Array<string>;
+    createdBy: string;
 }

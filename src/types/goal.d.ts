@@ -1,5 +1,5 @@
 interface Goal {
-    _id: number;
+    _id: string;
     category: string;
     title: string;
     date: Date;
