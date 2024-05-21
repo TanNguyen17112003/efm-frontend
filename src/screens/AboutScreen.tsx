@@ -78,7 +78,6 @@ export default function AboutScreen() {
           </Text>
         </Box>
       </Box>
-
       <Box mt={100} ml={5} mr={5} w={'90%'}>
         <FormControl w='100%'>
           <FormControl.Label>

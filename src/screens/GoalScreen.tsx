@@ -41,7 +41,7 @@ export const GoalScreen = () => {
   // }, [dispatch]);
 
   useEffect(() => {
-    if (goal) modifyGoalList(goal.goals);
+    if (goal && goal.goals) modifyGoalList(goal.goals);
   }, [goal]);
 
   useFocusEffect(
