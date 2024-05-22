@@ -22,7 +22,7 @@ export const DetailChartScreen = () => {
   const [flow, setFlow] = useState<string>('Outflow');
 
   const handleSetFlow = () => {
-    setFlow(flow === 'Outflow' ? 'Inflow' : 'Outflow');
+    setFlow(flow === "Outflow" ? 'Inflow' : 'Outflow');
   };
   const modifyListActivities = (activities: any) => {
     const newListActivities = activities.map((activity: any) => {
@@ -55,7 +55,7 @@ export const DetailChartScreen = () => {
     setOutflowDataList(outflowDataList);
   };
   const [flowMonth, setflowMonth] = useState<string>(
-    new Date().toLocaleString('default', { month: 'long' })
+    "January"
   );
   useEffect(() => {
     modifyListActivities(activities);

@@ -7,7 +7,8 @@ import {
   Progress,
   Image,
   ScrollView,
-  ThreeDotsIcon
+  ThreeDotsIcon,
+  Pressable
 } from 'native-base';
 import { ActivityIndicator, TouchableOpacity } from 'react-native';
 import { PlusCircleIcon } from 'react-native-heroicons/solid';
@@ -89,7 +90,7 @@ export const GoalScreen = () => {
         )}
         {goalList.length > 0 &&
           goalList.map((item: Goal, index) => (
-            <TouchableOpacity onPress={() => navigation.navigate('UpdateGoal', { id: item._id })}>
+            <Pressable onPress={() => navigation.navigate('UpdateGoal', { id: item._id })}>
               <Box
                 key={index}
                 style={tw`p-5 mb-5`}
@@ -128,7 +129,7 @@ export const GoalScreen = () => {
                   style={tw`mb-3`}
                 />
               </Box>
-            </TouchableOpacity>
+            </Pressable>
           ))}
       </ScrollView>
     </Box>
