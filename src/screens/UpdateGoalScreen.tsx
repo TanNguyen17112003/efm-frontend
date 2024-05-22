@@ -55,11 +55,11 @@ export const UpdateGoalScreen = () => {
   useEffect(() => {
     dispatch(getgoalById({ id: goalInfo?.id }));
   }, []);
+
   useEffect(() => {
-    dispatch(getgoalById({ id: goalInfo?.id }));
-  }, [dispatch]);
-  useEffect(() => {
-    if (currentGoal.goal) modifyGoal(currentGoal.goal);
+    if (currentGoal && currentGoal.goal) {
+      modifyGoal(currentGoal.goal);
+    } 
   }, [currentGoal]);
   // Actions related to current goal
   // Update goal
@@ -85,7 +85,7 @@ export const UpdateGoalScreen = () => {
   };
   return (
     <Box backgroundColor={'white'}>
-      {loading && <Loading />}
+      {/* {loading && <Loading />} */}
 
       <Box backgroundColor='blue.700' paddingTop={70} position='relative' borderBottomRadius={0}>
         <Box>
