@@ -58,7 +58,9 @@ export const DetailChartScreen = () => {
     "January"
   );
   useEffect(() => {
-    modifyListActivities(activities);
+    if (activities) {
+      modifyListActivities(activities);
+    }
   }, []);
 
   const [inflowDataList, setInflowDataList] = useState<any[]>([]);
