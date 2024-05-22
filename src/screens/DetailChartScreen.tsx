@@ -24,7 +24,7 @@ export const DetailChartScreen = () => {
   const [outflowDataList, setOutflowDataList] = useState<any[]>([]);
   const [flow, setFlow] = useState<string>('Outflow');
   const [flowMonth, setflowMonth] = useState<string>(
-    "May"
+    new Date().toLocaleString('default', { month: 'long' })
   );
   const convertToVND = (amount: number) => {
     return amount.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
@@ -74,7 +74,7 @@ export const DetailChartScreen = () => {
       await modifyOutflowDataListBasedOnMonth();
     };
     handleModify();
-  }, [flowMonth, listActivity]);
+  }, [setflowMonth, setListActivity]);
   
   return (
     <View>
