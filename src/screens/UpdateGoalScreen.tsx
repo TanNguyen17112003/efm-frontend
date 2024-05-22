@@ -83,7 +83,6 @@ export const UpdateGoalScreen = () => {
     setModifiedDate(currentDate);
     setShow(false);
   };
-  if (!goal) return <ActivityIndicator size='large' />;
   return (
     <Box backgroundColor={'white'}>
       {loading && <Loading />}
