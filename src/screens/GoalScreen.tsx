@@ -48,7 +48,9 @@ export const GoalScreen = () => {
   useFocusEffect(
     useCallback(() => {
       dispatch(getAllgoals());
-      modifyGoalList(goal.goals);
+      if (goal && goal.goals) {
+        modifyGoalList(goal.goals);
+      }
       return () => {
         dispatch(getAllgoals());
       };

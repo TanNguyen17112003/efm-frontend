@@ -85,7 +85,7 @@ export const UpdateGoalScreen = () => {
   };
   return (
     <Box backgroundColor={'white'}>
-      {/* {loading && <Loading />} */}
+      {loading && <Loading />}
 
       <Box backgroundColor='blue.700' paddingTop={70} position='relative' borderBottomRadius={0}>
         <Box>
