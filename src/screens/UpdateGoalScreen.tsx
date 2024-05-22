@@ -54,6 +54,9 @@ export const UpdateGoalScreen = () => {
   } = useAppSelector((state: RootState) => state.goal);
   useEffect(() => {
     dispatch(getgoalById({ id: goalInfo?.id }));
+  }, []);
+  useEffect(() => {
+    dispatch(getgoalById({ id: goalInfo?.id }));
   }, [dispatch]);
   useEffect(() => {
     if (currentGoal.goal) modifyGoal(currentGoal.goal);
