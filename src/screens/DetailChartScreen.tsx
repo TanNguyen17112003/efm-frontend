@@ -17,10 +17,18 @@ import {
 import { useState, useEffect } from 'react';
 
 export const DetailChartScreen = () => {
+  const navigator = useNavigation();
   const [listActivity, setListActivity] = useState<any[]>([]);
   const { activities, loading, error } = useAppSelector((state: RootState) => state.activity);
+  const [inflowDataList, setInflowDataList] = useState<any[]>([]);
+  const [outflowDataList, setOutflowDataList] = useState<any[]>([]);
   const [flow, setFlow] = useState<string>('Outflow');
-
+  const [flowMonth, setflowMonth] = useState<string>(
+    "May"
+  );
+  const convertToVND = (amount: number) => {
+    return amount.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+  };
   const handleSetFlow = () => {
     setFlow(flow === "Outflow" ? 'Inflow' : 'Outflow');
   };
@@ -39,7 +47,7 @@ export const DetailChartScreen = () => {
     setListActivity(newListActivities);
   };
   const modifyInflowDataListBasedOnMonth = () => {
-    if (listActivity.length === 0) return;
+    if (!listActivity || listActivity.length === 0) return;
     const inflowDataList = listActivity.filter(
       (activity: any) =>
         activity.month && activity.type === 'Income' && activity.month === flowMonth
@@ -47,35 +55,27 @@ export const DetailChartScreen = () => {
     setInflowDataList(inflowDataList);
   };
   const modifyOutflowDataListBasedOnMonth = () => {
-    if (listActivity.length === 0) return;
+    if (!listActivity || listActivity.length === 0) return;
     const outflowDataList = listActivity.filter(
       (activity: any) =>
         activity.month && activity.type === 'Expense' && activity.month === flowMonth
     );
     setOutflowDataList(outflowDataList);
   };
-  const [flowMonth, setflowMonth] = useState<string>(
-    "January"
-  );
+ 
   useEffect(() => {
     if (activities) {
       modifyListActivities(activities);
     }
   }, []);
-
-  const [inflowDataList, setInflowDataList] = useState<any[]>([]);
-  const [outflowDataList, setOutflowDataList] = useState<any[]>([]);
   useEffect(() => {
-    modifyInflowDataListBasedOnMonth();
+    const handleModify = async () => {
+      await modifyInflowDataListBasedOnMonth();
+      await modifyOutflowDataListBasedOnMonth();
+    };
+    handleModify();
   }, [flowMonth, listActivity]);
-
-  useEffect(() => {
-    modifyOutflowDataListBasedOnMonth();
-  }, [flowMonth, listActivity]);
-  const navigator = useNavigation();
-  const convertToVND = (amount: number) => {
-    return amount.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
-  };
+  
   return (
     <View>
       <Box
