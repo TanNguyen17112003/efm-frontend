@@ -8,9 +8,9 @@ import {
   Image,
   ScrollView,
   ThreeDotsIcon,
-  Pressable
+  Pressable,
 } from 'native-base';
-import { ActivityIndicator, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, SafeAreaView } from 'react-native';
 import { PlusCircleIcon } from 'react-native-heroicons/solid';
 import { getAllGoals } from '@services';
 import { useState, useCallback, useEffect } from 'react';
@@ -80,7 +80,6 @@ export const GoalScreen = () => {
           <Text bold>Add your goals</Text>
         </Box>
       </Box>
-      <ScrollView h={100}>
         {goalList.length == 0 && (
           <Box style={tw`flex-row items-center justify-center h-100`}>
             <Text fontSize={28} color={'red.700'} bold>
@@ -89,49 +88,98 @@ export const GoalScreen = () => {
           </Box>
         )}
         {goalList.length > 0 &&
-          goalList.map((item: Goal, index) => (
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#d1d5db' }}>
+        <FlatList
+          backgroundColor='gray.300'
+          style={tw`p-3`}
+          data={goalList}
+          keyExtractor={(item: any, index) => index.toString()}
+          renderItem={({ item }: { item: Goal }) => (
             <Pressable onPress={() => navigation.navigate('UpdateGoal', { id: item._id })}>
-              <Box
-                key={index}
-                style={tw`p-5 mb-5`}
-                backgroundColor='white'
-                borderWidth='1'
-                borderColor='coolGray.300'
-                rounded={8}
-              >
-                <View style={tw`flex-row items-center justify-between mb-3`}>
-                  <Box style={tw`flex-row items-center gap-3`}>
-                    <Image source={item.image} alt='Category' style={tw`w-10 h-10`} />
-                    <View>
-                      <Text bold>{item.title}</Text>
-                      <Text
-                        opacity={50}
-                      >{`${formatter.format(new Date(item.date))}, ${new Date(item.date).getFullYear()}`}</Text>
-                    </View>
-                  </Box>
+               <Box
+                  style={tw`p-5 mb-5`}
+                  backgroundColor='white'
+                  borderWidth='1'
+                  borderColor='coolGray.300'
+                  rounded={8}
+                >
+                  <View style={tw`flex-row items-center justify-between mb-3`}>
+                    <Box style={tw`flex-row items-center gap-3`}>
+                      <Image source={item.image} alt='Category' style={tw`w-10 h-10`} />
+                      <View>
+                        <Text bold>{item.title}</Text>
+                        <Text
+                          opacity={50}
+                        >{`${formatter.format(new Date(item.date))}, ${new Date(item.date).getFullYear()}`}</Text>
+                      </View>
+                    </Box>
+  
+                    <ThreeDotsIcon color='gray.500' />
+                  </View>
+                  <View style={tw`flex-row items-center justify-between`}>
+                    <Box style={tw`flex-row items-center gap-3`}>
+                      <Text bold fontSize='2xl'>{`${item.current / 1000000}M VNĐ`}</Text>
+                      <Text>{`saved of ${item.target / 1000000}M VNĐ`}</Text>
+                    </Box>
+                  </View>
+                  <Text
+                    marginBottom={3}
+                    italic
+                  >{`${getDiffDate(new Date(item.date))} days left`}</Text>
+                  <Progress
+                    w='300'
+                    shadow={2}
+                    value={(item.current / item.target) * 100}
+                    style={tw`mb-3`}
+                  />
+                </Box>
+              </Pressable>
+          )}
+        />
+      </SafeAreaView>
+          // goalList.map((item: Goal, index) => (
+          //   <Pressable onPress={() => navigation.navigate('UpdateGoal', { id: item._id })}>
+          //     <Box
+          //       key={index}
+          //       style={tw`p-5 mb-5`}
+          //       backgroundColor='white'
+          //       borderWidth='1'
+          //       borderColor='coolGray.300'
+          //       rounded={8}
+          //     >
+          //       <View style={tw`flex-row items-center justify-between mb-3`}>
+          //         <Box style={tw`flex-row items-center gap-3`}>
+          //           <Image source={item.image} alt='Category' style={tw`w-10 h-10`} />
+          //           <View>
+          //             <Text bold>{item.title}</Text>
+          //             <Text
+          //               opacity={50}
+          //             >{`${formatter.format(new Date(item.date))}, ${new Date(item.date).getFullYear()}`}</Text>
+          //           </View>
+          //         </Box>
 
-                  <ThreeDotsIcon color='gray.500' />
-                </View>
-                <View style={tw`flex-row items-center justify-between`}>
-                  <Box style={tw`flex-row items-center gap-3`}>
-                    <Text bold fontSize='2xl'>{`${item.current / 1000000}M VNĐ`}</Text>
-                    <Text>{`saved of ${item.target / 1000000}M VNĐ`}</Text>
-                  </Box>
-                </View>
-                <Text
-                  marginBottom={3}
-                  italic
-                >{`${getDiffDate(new Date(item.date))} days left`}</Text>
-                <Progress
-                  w='300'
-                  shadow={2}
-                  value={(item.current / item.target) * 100}
-                  style={tw`mb-3`}
-                />
-              </Box>
-            </Pressable>
-          ))}
-      </ScrollView>
+          //         <ThreeDotsIcon color='gray.500' />
+          //       </View>
+          //       <View style={tw`flex-row items-center justify-between`}>
+          //         <Box style={tw`flex-row items-center gap-3`}>
+          //           <Text bold fontSize='2xl'>{`${item.current / 1000000}M VNĐ`}</Text>
+          //           <Text>{`saved of ${item.target / 1000000}M VNĐ`}</Text>
+          //         </Box>
+          //       </View>
+          //       <Text
+          //         marginBottom={3}
+          //         italic
+          //       >{`${getDiffDate(new Date(item.date))} days left`}</Text>
+          //       <Progress
+          //         w='300'
+          //         shadow={2}
+          //         value={(item.current / item.target) * 100}
+          //         style={tw`mb-3`}
+          //       />
+          //     </Box>
+          //   </Pressable>
+          // ))
+        }
     </Box>
   );
 };

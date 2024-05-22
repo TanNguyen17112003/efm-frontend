@@ -69,7 +69,6 @@ export const AppNavigation = () => {
         <Stack.Screen
           name='UpdateGoal'
           component={UpdateGoalScreen}
-          initialParams={{ id: '333' }}
         />
         <Stack.Screen name='DetailChart' component={DetailChartScreen} />
         <Stack.Screen name='AddChallenge' component={AddChallengeScreen} />
