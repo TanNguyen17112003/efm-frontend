@@ -7,6 +7,7 @@ import { ChevronLeftIcon } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from 'react-native';
 import { CheckIcon } from 'native-base';
+import { useAppDispatch } from 'src/hooks/redux';
 import tw from 'twrnc';
 import {
   ArrowTrendingDownIcon,
@@ -15,9 +16,11 @@ import {
   ArrowDownIcon
 } from 'react-native-heroicons/solid';
 import { useState, useEffect } from 'react';
+import { getAllActivities } from 'src/store/reducers/activities';
 
 export const DetailChartScreen = () => {
   const navigator = useNavigation();
+  const dispatch = useAppDispatch();
   const [listActivity, setListActivity] = useState<any[]>([]);
   const { activities, loading, error } = useAppSelector((state: RootState) => state.activity);
   const [inflowDataList, setInflowDataList] = useState<any[]>([]);
@@ -64,17 +67,18 @@ export const DetailChartScreen = () => {
   };
  
   useEffect(() => {
-    if (activities) {
-      modifyListActivities(activities);
-    }
+    dispatch(getAllActivities());
   }, []);
+  useEffect(() => {
+    modifyListActivities(activities);
+  }, [activities]);
   useEffect(() => {
     const handleModify = async () => {
       await modifyInflowDataListBasedOnMonth();
       await modifyOutflowDataListBasedOnMonth();
     };
     handleModify();
-  }, [flowMonth, listActivity, setflowMonth, setListActivity]);
+  }, [flowMonth, listActivity]);
   
   return (
     <View>
