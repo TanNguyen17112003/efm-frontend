@@ -21,7 +21,7 @@ import { getAllActivities } from 'src/store/reducers/activities';
 export const DetailChartScreen = () => {
   const navigator = useNavigation();
   const dispatch = useAppDispatch();
-  const [listActivity, setListActivity] = useState<any[]>([]);
+  const [listActivity, setListActivity] = useState<DetailActivity[]>([]);
   const { activities, loading, error } = useAppSelector((state: RootState) => state.activity);
   const [inflowDataList, setInflowDataList] = useState<any[]>([]);
   const [outflowDataList, setOutflowDataList] = useState<any[]>([]);
@@ -49,37 +49,38 @@ export const DetailChartScreen = () => {
     });
     setListActivity(newListActivities);
   };
-  const modifyInflowDataListBasedOnMonth = () => {
-    if (!listActivity || listActivity.length === 0) return;
-    const inflowDataList = listActivity.filter(
-      (activity: any) =>
+  const modifyInflowDataListBasedOnMonth = (list: DetailActivity[]) => {
+    if (!list || list.length === 0) return;
+    const newInflowDataList = list.filter(
+      (activity: DetailActivity) =>
         activity.month && activity.type === 'Income' && activity.month === flowMonth
     );
-    setInflowDataList(inflowDataList);
+    setInflowDataList(newInflowDataList);
   };
-  const modifyOutflowDataListBasedOnMonth = () => {
-    if (!listActivity || listActivity.length === 0) return;
-    const outflowDataList = listActivity.filter(
-      (activity: any) =>
+  const modifyOutflowDataListBasedOnMonth = (list: DetailActivity[]) => {
+    if (!list || list.length === 0) return;
+    const newOutflowDataList = list.filter(
+      (activity: DetailActivity) =>
         activity.month && activity.type === 'Expense' && activity.month === flowMonth
     );
-    setOutflowDataList(outflowDataList);
+    setOutflowDataList(newOutflowDataList);
   };
  
   useEffect(() => {
     dispatch(getAllActivities());
   }, []);
   useEffect(() => {
-    modifyListActivities(activities);
-  }, [activities]);
-  useEffect(() => {
     const handleModify = async () => {
-      await modifyInflowDataListBasedOnMonth();
-      await modifyOutflowDataListBasedOnMonth();
+      modifyInflowDataListBasedOnMonth(listActivity);
+      modifyOutflowDataListBasedOnMonth(listActivity);
     };
     handleModify();
-  }, [flowMonth, listActivity]);
-  
+  }, [flowMonth, activities]);
+  useEffect(() => {
+    if (activities && activities.length > 0) {
+      modifyListActivities(activities);
+    }
+  }, [activities])
   return (
     <View>
       <Box
