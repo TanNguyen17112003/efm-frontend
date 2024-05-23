@@ -74,7 +74,7 @@ export const DetailChartScreen = () => {
       await modifyOutflowDataListBasedOnMonth();
     };
     handleModify();
-  }, [flowMonth, listActivity]);
+  }, [flowMonth, listActivity, setflowMonth, setListActivity]);
   
   return (
     <View>
