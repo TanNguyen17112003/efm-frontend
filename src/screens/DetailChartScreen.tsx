@@ -70,7 +70,7 @@ export const DetailChartScreen = () => {
     dispatch(getAllActivities());
   }, []);
   useEffect(() => {
-    const handleModify = async () => {
+    const handleModify = () => {
       modifyInflowDataListBasedOnMonth(listActivity);
       modifyOutflowDataListBasedOnMonth(listActivity);
     };
