@@ -48,7 +48,7 @@ export const SignupScreen = () => {
       dispatch(registerUser({ email, password, name: userName }))
         .unwrap()
         .then((result) => {
-          navigation.navigate('DrawerStack');
+          navigation.navigate('Login');
         })
         .catch((error) => {
           console.log(error);
